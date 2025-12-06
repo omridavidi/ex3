@@ -1,0 +1,29 @@
+package ast;
+
+public class AstParam extends AstNode
+{
+	public AstType type;
+	public String name;
+	
+	public AstParam(AstType type, String name)
+	{
+		serialNumber = AstNodeSerialNumber.getFresh();
+
+		System.out.format("====================== parameter -> type ID(%s)\n", name);
+
+		this.type = type;
+		this.name = name;
+	}
+
+	public void printMe()
+	{
+		System.out.format("AST PARAMETER (%s)\n", name);
+		if (type != null) type.printMe();
+
+		AstGraphviz.getInstance().logNode(
+				serialNumber,
+			String.format("PARAMETER(%s)\n",name));
+		
+		if (type != null) AstGraphviz.getInstance().logEdge(serialNumber,type.serialNumber);
+	}
+}

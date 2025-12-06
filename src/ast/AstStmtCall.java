@@ -2,38 +2,27 @@ package ast;
 
 public class AstStmtCall extends AstStmt
 {
-	/****************/
-	/* DATA MEMBERS */
-	/****************/
-	public AstExpCall callExp;
-	
-	/******************/
-	/* CONSTRUCTOR(S) */
-	/******************/
-	public AstStmtCall(AstExpCall callExp)
+	public AstCallExp call;
+
+	public AstStmtCall(AstCallExp call)
 	{
-		/******************************/
-		/* SET A UNIQUE SERIAL NUMBER */
-		/******************************/
 		serialNumber = AstNodeSerialNumber.getFresh();
 
-		this.callExp = callExp;
+		System.out.print("====================== stmt -> callExp;\n");
+
+		this.call = call;
 	}
-	
+
 	public void printMe()
 	{
-		callExp.printMe();
+		System.out.print("AST STMT CALL\n");
 
-		/***************************************/
-		/* PRINT Node to AST GRAPHVIZ DOT file */
-		/***************************************/
+		if (call != null) call.printMe();
+
 		AstGraphviz.getInstance().logNode(
-                serialNumber,
-			String.format("STMT\nCALL"));
-		
-		/****************************************/
-		/* PRINT Edges to AST GRAPHVIZ DOT file */
-		/****************************************/
-		AstGraphviz.getInstance().logEdge(serialNumber,callExp.serialNumber);
+				serialNumber,
+				"STMT CALL\n");
+
+		if (call != null) AstGraphviz.getInstance().logEdge(serialNumber, call.serialNumber);
 	}
 }

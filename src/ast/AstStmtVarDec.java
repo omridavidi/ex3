@@ -31,3 +31,18 @@ public class AstStmtVarDec extends AstStmt
 		return var.semantMe();
 	}
 }
+	AstGraphviz.getInstance().logNode(
+                serialNumber,
+			String.format("STMT\nDEC\nVAR"));
+		
+		/****************************************/
+		/* PRINT Edges to AST GRAPHVIZ DOT file */
+		/****************************************/
+		AstGraphviz.getInstance().logEdge(serialNumber,var.serialNumber);
+	}
+
+	public Type semantMe()
+	{
+		return var.semantMe();
+	}
+}
