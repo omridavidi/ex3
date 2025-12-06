@@ -1,5 +1,8 @@
 package ast;
 
+import symboltable.SymbolTable;
+import types.*;
+
 public class AstCallExp extends AstExp
 {
     public AstVar var;
@@ -43,6 +46,24 @@ public class AstCallExp extends AstExp
 	}
 
 	public Type SemantMe(){
+		TypeFunction function;
+		TypeList expectedParameters;
+		TypeList providedParameters = null;
 		
+		if (expList != null) 
+			{
+				providedParameters = expList.SemantMe();
+			}
+			
+		if (var == null){
+			Type func = SymbolTable.getInstance().find(name);
+			if (!(func instanceof TypeFunction)) throw new RuntimeException("semantic error");
+			function = (TypeFunction) func;
+			expectedParameters = function.params;
+		}
+		else{
+			Type object = var.SemantMe();
+			if (!(object))
+		}
 	}
 }

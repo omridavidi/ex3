@@ -1,6 +1,8 @@
 package ast;
 
+import symboltable.SymbolTable;
 import types.*;
+
 
 public class AstDecList extends AstNode
 {

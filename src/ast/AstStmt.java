@@ -1,5 +1,6 @@
 package ast;
 
+import symboltable.SymbolTable;
 import types.*;
 
 public abstract class AstStmt extends AstNode

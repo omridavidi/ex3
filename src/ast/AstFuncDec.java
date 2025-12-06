@@ -1,5 +1,8 @@
 package ast;
 
+import symboltable.SymbolTable;
+import types.*;
+
 public class AstFuncDec extends AstDec
 {
 	public AstType type;

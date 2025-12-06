@@ -1,7 +1,7 @@
 package ast;
 
+import symboltable.SymbolTable;
 import types.*;
-import symboltable.*;
 
 public class AstDecClass extends AstDec
 {

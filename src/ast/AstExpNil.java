@@ -1,5 +1,9 @@
 package ast;
 
+import symboltable.SymbolTable;
+import types.*;
+
+
 public class AstExpNil extends AstExp
 {
 	
