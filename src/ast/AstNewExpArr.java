@@ -31,4 +31,17 @@ public class AstNewExpArr extends AstNewExp
         if (type != null) AstGraphviz.getInstance().logEdge(serialNumber, type.serialNumber);
         if (size != null) AstGraphviz.getInstance().logEdge(serialNumber, size.serialNumber);
     }
+
+    public Type semantMe(){
+        Type t = type.semantMe();
+        if (t = TypeVoid.getInstance()) throw new RuntimeException("semantic error");
+       
+        Type sizeType = size.SemantMe();
+        if (sizeType != TypeInt.getInstance()) throw new RuntimeException("semantic error");
+
+        if (size instanceof AstExpInt) {
+            AstExpInt sizeInt = (AstExpInt) size;
+            if (sizeInt.value <= 0) throw new RuntimeException("semantic error");
+        }
+    }
 }

@@ -29,4 +29,8 @@ public class AstProgram extends AstNode
 		if (decList != null) AstGraphviz.getInstance().logEdge(serialNumber,decList.serialNumber);
 	}
 	
+	public Type semantMe() {
+        if (decList != null) decList.semantMe();
+        return null;
+    }
 }

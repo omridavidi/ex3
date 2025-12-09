@@ -22,4 +22,8 @@ public class AstExpNil extends AstExp
 				serialNumber,
 			String.format("NIL"));
 	}
+
+	public Type semantMe(){
+        return TypeNil.getInstance();
+    }
 }

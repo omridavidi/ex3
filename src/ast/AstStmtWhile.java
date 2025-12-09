@@ -32,4 +32,15 @@ public class AstStmtWhile extends AstStmt
 		if (condition != null) AstGraphviz.getInstance().logEdge(serialNumber, condition.serialNumber);
 		if (body != null) AstGraphviz.getInstance().logEdge(serialNumber, body.serialNumber);
 	}
+
+	public Type semantMe(){
+		Type condType = condition.semantMe();
+		if (condType != TypeInt.getInstance()) throw new RuntimeException("semantic error");
+
+		SymbolTable.getInstance().beginScope();
+
+        if (body != null) body.semantMe();
+        SymbolTable.getInstance().endScope();
+		return null;
+	}
 }

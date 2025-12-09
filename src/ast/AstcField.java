@@ -25,4 +25,10 @@ public class AstcField extends AstNode
 		AstGraphviz.getInstance().logNode(serialNumber, String.format("cField"));
 		if (dec != null) AstGraphviz.getInstance().logEdge(serialNumber,dec.serialNumber);
 	}
+
+public Type semantMe() {
+
+        dec.semantMe();
+        return null;
+    }
 }

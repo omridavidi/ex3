@@ -24,6 +24,39 @@ public class TypeClass extends Type
 		this.dataMembers = dataMembers;
 	}
 
+	public String toString()
+	{
+		return this.getClass().getSimpleName();
+	}
+
+	@Override
+	public boolean isClass(){ return true;}
+	
+	public boolean isSubTypeOf(TypeClass other) {
+
+		TypeClass current = this;
+		while (current != null) {
+			if (current.name.equals(other.name)) {
+				return true;
+			}
+			current = current.father;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean isAssignableFrom(Type other) {
+		// other == TypeNil.getInstance() handles the nil case (typeNil is singleton)
+		if (other == TypeNil.getInstance()) {
+			return true;
+		}
+
+		if(!(other instanceof TypeClass)) {
+			return false;
+		}
+
+		return (this.isSubTypeOf((TypeClass)other));
+	}
 
 	
 }

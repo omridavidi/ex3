@@ -33,4 +33,14 @@ public class AstExpList extends AstNode
 		if (head != null) AstGraphviz.getInstance().logEdge(serialNumber,head.serialNumber);
 		if (tail != null) AstGraphviz.getInstance().logEdge(serialNumber,tail.serialNumber);
 	}
+
+	public TypeList semantMe(){
+		Type headType = null;
+		if (head != null) headType = head.semantMe();
+
+		TypeList tailList = null;
+		if (tail != null) tailList = tail.semantMe();
+
+		return new TypeList(headType, tailList);	
+	}
 }

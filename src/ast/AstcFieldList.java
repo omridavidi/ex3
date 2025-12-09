@@ -32,4 +32,9 @@ public class AstcFieldList extends AstNode
 		if (cFieldList != null) AstGraphviz.getInstance().logEdge(serialNumber,cFieldList.serialNumber);
 	}
 	
+	public Type semantMe(){
+		if (cField != null) cField.semantMe();
+		if (cFieldList != null) cFieldList.semantMe();
+		return null;
+	}
 }

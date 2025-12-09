@@ -12,6 +12,7 @@ public class TypeString extends Type
 	/*****************************/
 	protected TypeString() {}
 
+	
 	/******************************/
 	/* GET SINGLETON INSTANCE ... */
 	/******************************/

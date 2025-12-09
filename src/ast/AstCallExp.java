@@ -45,14 +45,14 @@ public class AstCallExp extends AstExp
 		if (expList != null) AstGraphviz.getInstance().logEdge(serialNumber, expList.serialNumber);
 	}
 
-	public Type SemantMe(){
-		TypeFunction function;
+	public Type semantMe(){
+		TypeFunction function = null;
 		TypeList expectedParameters;
 		TypeList providedParameters = null;
 		
 		if (expList != null) 
 			{
-				providedParameters = expList.SemantMe();
+				providedParameters = expList.semantMe();
 			}
 			
 		if (var == null){
@@ -62,8 +62,33 @@ public class AstCallExp extends AstExp
 			expectedParameters = function.params;
 		}
 		else{
-			Type object = var.SemantMe();
-			if (!(object))
+			Type object = var.semantMe();
+			if (!(object instanceof TypeClass)) throw new RuntimeException("semantic error");
+			TypeClass class = (TypeClass) object;
+
+			while(object != null){
+				if (object.dataMembers != null){
+					Type foundDataMember = object.dataMembers.find(name);
+					if (foundDataMember instanceof TypeFunction){
+						function = (TypeFunction) foundDataMember;
+						break;
+					}
+				}
+				object = object.father;
+			}
 		}
+
+		TypeList expectedPointer = expectedParameters;
+		TypeList providedPointer = providedParameters;
+
+		while(expectedPointer != null && providedPointer != null){
+			if (!expectedPointer.head.isAssignableFrom(providedPointer)) throw new RuntimeException("semantic error");
+			expectedPointer = expectedPointer.tail;
+			providedPointer = providedPointer.tail;
+		}
+
+		if (expectedPointer != null || providedPointer != null) throw new RuntimeException("semantic error");
+
+		return function.returnType;
 	}
 }

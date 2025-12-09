@@ -28,4 +28,13 @@ public class AstStmtCall extends AstStmt
 
 		if (call != null) AstGraphviz.getInstance().logEdge(serialNumber, call.serialNumber);
 	}
+
+	public Type semantMe(){
+		if (call == null) throw new RuntimeException("semantic error");
+
+        Type t = call.semantMe();
+        if (t == null) throw new RuntimeException("semantic error");
+
+		return null;
+	}
 }

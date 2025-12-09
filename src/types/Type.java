@@ -16,4 +16,6 @@ public abstract class Type
 	/* isArray() */
 	/*************/
 	public boolean isArray(){ return false;}
+	public boolean isAssignableFrom(Type other) { return this == other; }
+
 }

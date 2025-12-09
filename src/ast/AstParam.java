@@ -29,4 +29,12 @@ public class AstParam extends AstNode
 		
 		if (type != null) AstGraphviz.getInstance().logEdge(serialNumber,type.serialNumber);
 	}
+
+	public Type semantMe(){
+		Type t = type.semantMe();
+		if (t == TypeVoid.getInstance()) throw new RuntimeException("semantic error");
+
+		SymbolTable.getInstance().enter(name, t);
+		return t;
+	}
 }

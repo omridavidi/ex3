@@ -40,4 +40,56 @@ public class AstFuncDec extends AstDec
         if(stmtList != null) AstGraphviz.getInstance().logEdge(serialNumber,stmtList.serialNumber);
 
 	}
+
+	public Type semantMe()
+	{
+		Type t;
+		Type returnType = null;
+		TypeList type_list = null;
+
+		/*******************/
+		/* [0] return type */
+		/*******************/
+		returnType = SymbolTable.getInstance().find(returnTypeName);
+		if (returnType == null) throw new RuntimeException("semantic error");
+	
+		/****************************/
+		/* [1] Begin Function Scope */
+		/****************************/
+		SymbolTable.getInstance().beginScope();
+
+		/***************************/
+		/* [2] Semant Input Params */
+		/***************************/
+		for (AstTypeNameList it = params; it  != null; it = it.tail)
+		{
+			t = SymbolTable.getInstance().find(it.head.type);
+			if (t == null) throw new RuntimeException("semantic error");
+			else
+			{
+				type_list = new TypeList(t,type_list);
+				SymbolTable.getInstance().enter(it.head.name,t);
+			}
+		}
+
+		/*******************/
+		/* [3] Semant Body */
+		/*******************/
+		body.semantMe();
+
+		/*****************/
+		/* [4] End Scope */
+		/*****************/
+		SymbolTable.getInstance().endScope();
+
+		/***************************************************/
+		/* [5] Enter the Function Type to the Symbol Table */
+		/***************************************************/
+		SymbolTable.getInstance().enter(name,new TypeFunction(returnType,name,type_list));
+
+		/************************************************************/
+		/* [6] Return value is irrelevant for function declarations */
+		/************************************************************/
+		return null;		
+	}
 }

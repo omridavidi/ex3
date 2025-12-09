@@ -7,6 +7,16 @@ public class AstExpBinop extends AstExp
 	public AstExp left;
 	public AstExp right;
 	
+    public static final int OP_PLUS   = 1;
+    public static final int OP_MINUS  = 2;
+    public static final int OP_TIMES  = 3;
+    public static final int OP_DIVIDE = 4;
+    public static final int OP_LT = 5;
+    public static final int OP_GT = 6;
+    public static final int OP_EQ = 7;
+
+
+
 	public AstExpBinop(AstExp left, AstExp right, int op)
 	{
 		serialNumber = AstNodeSerialNumber.getFresh();
@@ -17,16 +27,33 @@ public class AstExpBinop extends AstExp
 		this.op = op;
 	}
 	
+	public String getOpString() {
+		switch (this.op) {
+			case OP_PLUS:
+				return "+";
+			case OP_MINUS:
+				return "-";
+			case OP_TIMES:
+				return "*";
+			case OP_DIVIDE:
+				return "/";
+			case OP_LT:
+				return "<";
+			case OP_GT:
+				return ">";
+			case OP_EQ:
+				return "=";
+			default:
+				return "unknown";
+		}
+	}
+	
+	@Override
 	public void printMe()
 	{
+
 		String sop="";
-		if (op == 0) {sop = "+";}
-		if (op == 1) {sop = "-";}
-		if (op == 2) {sop = "*";}
-		if (op == 3) {sop = "/";}
-		if (op == 4) {sop = "<";}
-		if (op == 5) {sop = ">";}
-		if (op == 6) {sop = "=";}
+		sop = getOpString();
 		
 		System.out.print("AST BINOP EXP\n");
 
@@ -49,12 +76,56 @@ public class AstExpBinop extends AstExp
 		if (left  != null) t1 = left.semantMe();
 		if (right != null) t2 = right.semantMe();
 		
-		if ((t1 == TypeInt.getInstance()) && (t2 == TypeInt.getInstance()))
-		{
-			return TypeInt.getInstance();
-		}
-		System.exit(0);
-		return null;
-	}
+		switch(this.op){
+			case OP_PLUS:
+                if (t1 == TypeInt.getInstance() && t2 == TypeInt.getInstance()) return TypeInt.getInstance();
+                if (t1 == TypeString.getInstance() && t2 == TypeString.getInstance()) return TypeString.getInstance();
+                throw new RuntimeException("semantic error");
 
+            case OP_MINUS:
+				if (t1 == TypeInt.getInstance() && t2 == TypeInt.getInstance()) return TypeInt.getInstance();
+				throw new RuntimeException("semantic error");
+            
+			case OP_TIMES:
+				if (t1 == TypeInt.getInstance() && t2 == TypeInt.getInstance()) return TypeInt.getInstance();
+				throw new RuntimeException("semantic error");
+            
+			case OP_DIVIDE:
+                if (t1 != TypeInt.getInstance() || t2 != TypeInt.getInstance())
+                    throw new RuntimeException("semantic error");
+                
+                if (right instanceof AstExpInt) {
+                    AstExpInt rightInt = (AstExpInt) right;
+                    if (rightInt.value == 0)
+                        throw new RuntimeException("semantic error");
+                }
+                return TypeInt.getInstance();
+            
+			case OP_LT:
+				if (t1 == TypeInt.getInstance() && t2 == TypeInt.getInstance()) return TypeInt.getInstance();
+				throw new RuntimeException("semantic error");
+			
+			case OP_GT:
+				if (t1 == TypeInt.getInstance() && t2 == TypeInt.getInstance()) return TypeInt.getInstance();
+				throw new RuntimeException("semantic error");
+
+            
+			case OP_EQ:
+                if (t1 == t2 &&
+                (t1 == TypeInt.getInstance() || t1 == TypeString.getInstance()))
+                    return TypeInt.getInstance();
+
+                if (t1.isAssignableFrom(t2) || t2.isAssignableFrom(t1))
+                    return TypeInt.getInstance();
+
+                if ((t1 instanceof TypeArray && t2 == TypeNil.getInstance()) ||
+                    (t2 instanceof TypeArray && t1 == TypeNil.getInstance()))
+                    return TypeInt.getInstance();
+
+                throw new RuntimeException("semantic error");
+
+			default:
+                throw new RuntimeException("semantic error");
+		}
+	}
 }

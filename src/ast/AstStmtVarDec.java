@@ -45,6 +45,7 @@ public class AstStmtVarDec extends AstStmt
 
 	public Type semantMe()
 	{
-		return var.semantMe();
+		if (varDec != null) return varDec.semantMe();
+		return null;
 	}
 }

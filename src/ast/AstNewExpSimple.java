@@ -27,4 +27,11 @@ public class AstNewExpSimple extends AstNewExp
 
         if (type != null) AstGraphviz.getInstance().logEdge(serialNumber, type.serialNumber);
     }
+
+    public Type semantMe(){
+        Type t = type.semantMe();
+        if (!(t instanceof TypeClass)) throw new RuntimeException("semantic error");
+
+        return t;
+    }
 }

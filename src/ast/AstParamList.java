@@ -34,4 +34,13 @@ public class AstParamList extends AstNode
 		if (paramList != null) AstGraphviz.getInstance().logEdge(serialNumber,paramList.serialNumber);
 	}
 	
+	public Type semantMe(){
+		Type paramType = param.semantMe();
+		if (paramType == TypeVoid.getInstance()) throw new RuntimeException("semantic error");
+
+		TypeList paramListType = null;
+		if (paramList != null) paramListType = paramList.semantMe();
+
+		return new TypeList(paramType, paramListType);
+	}
 }

@@ -6,7 +6,7 @@ import types.*;
 
 public class AstDecList extends AstNode
 {
-		public AstDec head;
+	public AstDec head;
 	public AstDecList tail;
 
 	public AstDecList(AstDec head, AstDecList tail)
@@ -36,9 +36,6 @@ public class AstDecList extends AstNode
 
 	public Type semantMe()
 	{
-		/*************************************/
-		/* RECURSIVELY PRINT HEAD + TAIL ... */
-		/*************************************/
 		if (head != null) head.semantMe();
 		if (tail != null) tail.semantMe();
 

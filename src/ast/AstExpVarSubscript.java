@@ -8,9 +8,6 @@ public class AstExpVarSubscript extends AstExpVar
 	public AstExpVar var;
 	public AstExp subscript;
 	
-	/******************/
-	/* CONSTRUCTOR(S) */
-	/******************/
 	public AstExpVarSubscript(AstExpVar var, AstExp subscript)
 	{
 		System.out.print("====================== var -> var [ exp ]\n");
@@ -18,20 +15,21 @@ public class AstExpVarSubscript extends AstExpVar
 		this.subscript = subscript;
 	}
 
-	/*****************************************************/
-	/* The printing message for a subscript var AST node */
-	/*****************************************************/
 	public void printMe()
 	{
-		/*************************************/
-		/* AST NODE TYPE = AST SUBSCRIPT VAR */
-		/*************************************/
 		System.out.print("AST NODE SUBSCRIPT VAR\n");
 
-		/****************************************/
-		/* RECURSIVELY PRINT VAR + SUBSRIPT ... */
-		/****************************************/
 		if (var != null) var.printMe();
 		if (subscript != null) subscript.printMe();
+	}
+
+	public TypeList semantMe(){
+		Type headType = null;
+		if (var != null) headType = var.semantMe();
+
+		TypeList tailList = null;
+		if (subscript != null) tailList = subscript.semantMe();
+
+		return new TypeList(headType, tailList);	
 	}
 }

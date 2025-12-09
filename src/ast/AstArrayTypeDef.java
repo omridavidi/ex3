@@ -31,8 +31,8 @@ public class AstArrayTypeDef extends AstDec
         if(type != null) AstGraphviz.getInstance().logEdge(serialNumber,type.serialNumber);
 	}
 
-	public TypeArray SemantMe(){
-		Type elementType = this.type.SemantMe();
+	public TypeArray semantMe(){
+		Type elementType = this.type.semantMe();
 
 		if (elementType == TypeVoid.getInstance()) throw new RuntimeException("semantic error");
 		if (SymbolTable.getInstance().findInCurrentScope(name) != null) throw new RuntimeException("semantic error");
