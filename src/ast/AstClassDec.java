@@ -2,6 +2,7 @@ package ast;
 
 import symboltable.SymbolTable;
 import types.*;
+import java.util.HashSet;
 
 public class AstClassDec extends AstDec
 {
@@ -52,32 +53,84 @@ public class AstClassDec extends AstDec
 
     public Type semantMe()
 	{	
-		/*************************/
-		/* [1] Begin Class Scope */
-		/*************************/
-		SymbolTable.getInstance().beginScope();
+		SymbolTable symTable = SymbolTable.getInstance();
 
-		/***************************/
-		/* [2] Semant Data Members */
-		/***************************/
-		TypeClass t = new TypeClass(null,name, dataMembers.semantMe());
+		if (symTable.findInCurrentScope(name) != null)
+		{
+			throw new RuntimeException("semantic error");
+		}
 
-		/*****************/
-		/* [3] End Scope */
-		/*****************/
-		SymbolTable.getInstance().endScope();
+		TypeClass superClassType = null;
+		if (superName != null)
+		{
+			Type superType = symTable.find(superName);
+			if (!(superType instanceof TypeClass)) throw new RuntimeException("semantic error");
+			superClassType = (TypeClass)superType;
+		}
 
-		/************************************************/
-		/* [4] Enter the Class Type to the Symbol Table */
-		/************************************************/
-		SymbolTable.getInstance().enter(name,t);
+		if (cFieldList != null){
+			HashSet<String> fieldNames = new HashSet<String>();
+			for (AstcFieldList it = cFieldList; it != null; it = it.cFieldList){
+				String fieldName = null;
+				if (it.cField.dec instanceof AstVarDec) fieldName = ((AstVarDec)it.cField.dec).name;
+				else if (it.cField.dec instanceof AstFuncDec) fieldName = ((AstFuncDec)it.cField.dec).name;
+				else if (it.cField.dec instanceof AstClassDec) fieldName = ((AstClassDec)it.cField.dec).name;
+				else if (it.cField.dec instanceof AstArrayTypeDec) fieldName = ((AstArrayTypeDec)it.cField.dec).name;
+				if (fieldName == null || fieldNames.contains(fieldName)) throw new RuntimeException("semantic error");
+				fieldNames.add(fieldName);
+			}
+		}
 
-		/*********************************************************/
-		/* [5] Return value is irrelevant for class declarations */
-		/*********************************************************/
-		return null;
+		if (superClassType != null) {
+            for (AstcFieldList it = cFieldList; it != null; it = it.cFieldList) {
+                AstDec dec = it.cField.dec;
 
-        Hashem Ishmor
+                if (dec instanceof AstVarDec) {
+                    AstVarDec vd = (AstVarDec) dec;
+                    if (findInParentChain(superClassType, vd.name) != null) {
+                        throw new RuntimeException("semantic error");
+                    }
+                } else if (dec instanceof AstFuncDec) {
+                    AstFuncDec fd = (AstFuncDec) dec;
+                    Type parentMember = findInParentChain(superClassType, fd.name);
+
+                    if (parentMember != null) {
+                        if (!(parentMember instanceof TypeFunction)) {
+                            throw new RuntimeException("semantic error");
+                        }
+
+                        TypeFunction parentFunc = (TypeFunction) parentMember;
+                        Type retType = fd.retType.semantMe();
+                        TypeList params = (fd.args != null ? fd.args.buildTypeList() : null);
+
+                        if (!signaturesMatch(parentFunc, retType, params)) {
+                            throw new RuntimeException("semantic error");
+                        }
+                    }
+                }
+            }
+        }
+
+		/*
+		- TODO
+		- Finish code below to cover all checks from line 85 Omer
+		- Add check for field shadowing a method in superclass
+		- Change findInParentChain call to match omri implementation
+		*/
+
+		TypeClass classType = new TypeClass(name, superClassType);
+		symTable.enter(name, classType);
+
+		symTable.beginScope();
+
+		if (cFieldList != null)
+		{
+			cFieldList.semantMe(classType);
+		}
+
+		symTable.endScope();
+
+		return classType;
 	}
 }
 

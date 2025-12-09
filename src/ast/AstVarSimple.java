@@ -22,4 +22,11 @@ public class AstVarSimple extends AstVar
 
 		AstGraphviz.getInstance().logNode(serialNumber, String.format("SIMPLE VAR\n(%s)",name));
 	}
+
+	public Type semantMe()
+	{
+		Type t = SymbolTable.getInstance().find(name);
+		if (t == null) throw new RuntimeException("semantic error");
+		return t;
+	}
 }

@@ -3,13 +3,12 @@ package ast;
 import symboltable.SymbolTable;
 import types.*;
 
-public class AstTypeID extends AstType
+public class AstTypeID extends AstNode
 {
 	public String ID;
 	
 	public AstTypeID(String ID)
 	{
-		super(ID);
 		serialNumber = AstNodeSerialNumber.getFresh();
 
 		System.out.format("====================== ID: (%s)\n",ID);
@@ -19,11 +18,18 @@ public class AstTypeID extends AstType
 
 	public void printMe()
 	{
-
 		System.out.format("AST TYPE ID( %s )\n",ID);
 
 		AstGraphviz.getInstance().logNode(
 				serialNumber,
 			String.format(" ID : %s",ID));
+	}
+
+	public Type semantMe(){
+		Type type = SymbolTable.getInstance().find(ID);
+
+		if (type == null || type == TypeVoid.getInstance()) throw new RuntimeException("semantic error");
+
+		return type;
 	}
 }

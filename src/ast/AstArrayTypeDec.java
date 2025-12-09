@@ -3,12 +3,12 @@ package ast;
 import symboltable.SymbolTable;
 import types.*;
 
-public class AstArrayTypeDef extends AstDec
+public class AstArrayTypeDec extends AstDec
 {
 	public String name;
 	public AstType type;
 
-	public AstArrayTypeDef(String name, AstType type)
+	public AstArrayTypeDec(String name, AstType type)
 	{
 		serialNumber = AstNodeSerialNumber.getFresh();
 	

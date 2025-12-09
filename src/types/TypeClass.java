@@ -44,6 +44,9 @@ public class TypeClass extends Type
 		return false;
 	}
 
+
+
+
 	@Override
 	public boolean isAssignableFrom(Type other) {
 		// other == TypeNil.getInstance() handles the nil case (typeNil is singleton)

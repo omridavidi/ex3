@@ -29,6 +29,22 @@ public class AstStmtReturn extends AstStmt
 
 	public Type semantMe(){
 		Type returnType = SymbolTable.getInstance().find("__RET_TYPE__");
-		
+		if (returnType == null) throw new RuntimeException("semantic error");
+
+		Type expType = null;
+		if (exp != null) expType = exp.semantMe();
+
+		if (returnType == TypeVoid.getInstance() && exp != null) throw new RuntimeException("semantic error");
+
+		if (exp == null) return null;
+
+		if (expType == TypeNil.getInstance()) {
+            if (!(returnType instanceof TypeClass) && !(returnType instanceof TypeArray))
+                throw new RuntimeException("semantic error");
+            return null;
+        }
+
+		if (!returnType.isAssignableFrom(expType)) throw new RuntimeException("semantic error");
+		return null;
 	}
 }

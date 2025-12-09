@@ -95,7 +95,7 @@ non terminal AstParam param;
 non terminal AstClassDec classDec;
 non terminal AstcFieldList cFieldList;
 non terminal AstcField cField;
-non terminal AstArrayTypeDef arrayTypedef;
+non terminal AstArrayTypeDec arrayTypedec;
 non terminal AstNewExp newExp;
 non terminal AstCallExp callExp;
 non terminal AstExpList expList;
@@ -180,7 +180,7 @@ cField		::=		varDec:vd		{: RESULT = new AstcField(vd);	        :}
 					| funcDec:fd 	{: RESULT = new AstcField(fd);			:}
 					;
 
-arrayTypedef::=		ARRAY ID:name EQ type:t LBRACK RBRACK SEMICOLON							{: RESULT = new AstArrayTypeDef(name, t);			:}
+arrayTypedef::=		ARRAY ID:name EQ type:t LBRACK RBRACK SEMICOLON							{: RESULT = new AstArrayTypeDec(name, t);			:}
 					;
 
 exp			::=		var:v								{: RESULT = new AstExpVar(v);					:}

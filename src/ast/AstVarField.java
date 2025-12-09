@@ -30,4 +30,22 @@ public class AstVarField extends AstVar
 		
 		if (var != null) AstGraphviz.getInstance().logEdge(serialNumber,var.serialNumber);
 	}
+
+	public Type semantMe()
+	{
+		Type varType = var.semantMe();
+		if (!(varType instanceof TypeClass)) throw new RuntimeException("semantic error");
+
+		TypeClass varClass = (TypeClass)varType;
+        while (varClass != null) {
+            if (varClass.dataMembers != null) {
+                Type found = varClass.dataMembers.find(fieldName);
+                if (found != null)
+                    return found;
+            }
+            varClass = varClass.father;
+        }
+
+		throw new RuntimeException("semantic error");
+	}
 }

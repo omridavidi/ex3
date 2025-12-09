@@ -48,34 +48,19 @@ public class AstVarDec extends AstDec
 	}
 
     public Type semantMe(){
-		Type t;
-	
-		/****************************/
-		/* [1] Check If Type exists */
-		/****************************/
-		t = SymbolTable.getInstance().find(type);
-		if (t == null)
-		{
-			System.out.format(">> ERROR [%d:%d] non existing type %s\n",2,2,type);
-			System.exit(0);
-		}
+		Type t = type.semantMe();
+		if (t == null || t == TypeVoid.getInstance()) throw new RuntimeException("semantic error");
 		
-		/**************************************/
-		/* [2] Check That Name does NOT exist */
-		/**************************************/
-		if (SymbolTable.getInstance().find(name) != null)
-		{
-			System.out.format(">> ERROR [%d:%d] variable %s already exists in scope\n",2,2,name);				
-		}
+		if (SymbolTable.getInstance().findInCurrentScope(name) != null) throw new RuntimeException("semantic error");
 
-		/************************************************/
-		/* [3] Enter the Identifier to the Symbol Table */
-		/************************************************/
-		SymbolTable.getInstance().enter(name,t);
-
-		/************************************************************/
-		/* [4] Return value is irrelevant for variable declarations */
-		/************************************************************/
-		return null;		
+		if (exp != null){
+			Type expType = exp.semantMe();
+			if (expType == TypeNil.getInstance()){
+				if(!(t instanceof TypeClass) && !(t instanceof TypeArray)) throw new RuntimeException("semantic error");
+			}
+			if (!t.isAssignableFrom(expType)) throw new RuntimeException("semantic error");
+		}		
+		SymbolTable.getInstance().enter(name, t);
+		return t;		
 	}
 }

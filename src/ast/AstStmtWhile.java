@@ -38,9 +38,9 @@ public class AstStmtWhile extends AstStmt
 		if (condType != TypeInt.getInstance()) throw new RuntimeException("semantic error");
 
 		SymbolTable.getInstance().beginScope();
-
         if (body != null) body.semantMe();
         SymbolTable.getInstance().endScope();
+		
 		return null;
 	}
 }

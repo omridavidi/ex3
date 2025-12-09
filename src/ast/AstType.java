@@ -3,11 +3,11 @@ package ast;
 import symboltable.SymbolTable;
 import types.*;
 
-public abstract class AstType extends AstNode
+public class AstType extends AstNode
 {
 	public String type;
 	
-	public AstType(String name)
+	public AstType(String type)
 	{
 		serialNumber = AstNodeSerialNumber.getFresh();
 	
@@ -18,11 +18,23 @@ public abstract class AstType extends AstNode
 
 	public void printMe()
 	{
-
 		System.out.format("AST TYPE( %s )\n",type);
 
 		AstGraphviz.getInstance().logNode(
 				serialNumber,
 			String.format("TYPE : %s",type));
+	}
+
+	public Type semantMe(){
+		switch (type){
+			case "Int":
+				return TypeInt.getInstance();
+			case "String":
+				return TypeString.getInstance();
+			case "Void":
+				return TypeVoid.getInstance();
+			default:
+				return null;
+		}
 	}
 }
