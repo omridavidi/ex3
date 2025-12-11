@@ -24,9 +24,9 @@ public class TypeNil extends Type
 	}
 
 	@Override
-	public boolean isCompatibleWith(Type other) {
-		// nil can only be assigned to class types
-		return other instanceof TypeClass;
+	public boolean isCompatibleWith(Type other)
+	{
+		return false;
 	}
 
 	

@@ -69,8 +69,22 @@ public class AstExpBinop extends AstExp
 		if (right != null) AstGraphviz.getInstance().logEdge(serialNumber,right.serialNumber);
 	}
 
+
 	public Type semantMe()
 	{
+		// rule 1:  When performing division (using the / operator), if the divisor is a constant, it must not be 0
+
+
+		// Equality Testing: Equality testing (=) is legal only when the two expressions are comparable.
+			// rule 2: For primitive types and arrays, this requires that both expressions have exactly the same type.
+			// rule 3: For class types, this requires that either both expressions have exactly the same class type, or that the
+					// type of one expression is a subclass of the type of the other expression. For example, if class Son is
+					// derived from class Father, then an expression of type Father can be compared for equality with an
+					// expression of type Son, and vice versa.
+			// rule 4: Recall that an expression of an array or class type may be tested for equality with nil. However,
+					// comparing nil to variables of type int or string is illegal.
+
+
 		Type t1 = null;
 		Type t2 = null;
 		
@@ -79,22 +93,33 @@ public class AstExpBinop extends AstExp
 		
 		switch(this.op){
 			case OP_PLUS:
-                if (t1 == TypeInt.getInstance() && t2 == TypeInt.getInstance()) return TypeInt.getInstance();
-                if (t1 == TypeString.getInstance() && t2 == TypeString.getInstance()) return TypeString.getInstance();
+				// both integers or both strings
+                if (t1 == TypeInt.getInstance() && t2 == TypeInt.getInstance())
+					return TypeInt.getInstance();
+
+                if (t1 == TypeString.getInstance() && t2 == TypeString.getInstance())
+					return TypeString.getInstance();
                 throw new RuntimeException("semantic error");
 
             case OP_MINUS:
-				if (t1 == TypeInt.getInstance() && t2 == TypeInt.getInstance()) return TypeInt.getInstance();
+				// only integers
+				if (t1 == TypeInt.getInstance() && t2 == TypeInt.getInstance())
+					return TypeInt.getInstance();
 				throw new RuntimeException("semantic error");
             
 			case OP_TIMES:
-				if (t1 == TypeInt.getInstance() && t2 == TypeInt.getInstance()) return TypeInt.getInstance();
+				// only integers
+				if (t1 == TypeInt.getInstance() && t2 == TypeInt.getInstance())
+					return TypeInt.getInstance();
 				throw new RuntimeException("semantic error");
             
 			case OP_DIVIDE:
+				// only integers
                 if (t1 != TypeInt.getInstance() || t2 != TypeInt.getInstance())
                     throw new RuntimeException("semantic error");
                 
+				// rule 1:  When performing division (using the / operator), if the divisor is a constant, it must not be 0
+
                 if (right instanceof AstExpInt) {
                     AstExpInt rightInt = (AstExpInt) right;
                     if (rightInt.value == 0)
@@ -103,24 +128,27 @@ public class AstExpBinop extends AstExp
                 return TypeInt.getInstance();
             
 			case OP_LT:
+				// only integers
 				if (t1 == TypeInt.getInstance() && t2 == TypeInt.getInstance()) return TypeInt.getInstance();
 				throw new RuntimeException("semantic error");
 			
 			case OP_GT:
+				// only integers
 				if (t1 == TypeInt.getInstance() && t2 == TypeInt.getInstance()) return TypeInt.getInstance();
 				throw new RuntimeException("semantic error");
 
-            
 			case OP_EQ:
-                if (t1 == t2 &&
-                (t1 == TypeInt.getInstance() || t1 == TypeString.getInstance()))
+				// rule 2
+                if (t1 == t2 && (t1 == TypeInt.getInstance() || t1 == TypeString.getInstance()))
                     return TypeInt.getInstance();
 
+				// rule 3
                 if (t1.isCompatibleWith(t2) || t2.isCompatibleWith(t1))
                     return TypeInt.getInstance();
 
-                if ((t1 instanceof TypeArray && t2 == TypeNil.getInstance()) ||
-                    (t2 instanceof TypeArray && t1 == TypeNil.getInstance()))
+				// rule 4
+                if (((t1 instanceof TypeArray || t1 instanceof TypeClass) && t2 == TypeNil.getInstance()) ||
+                    ((t2 instanceof TypeArray || t2 instanceof TypeClass) && t1 == TypeNil.getInstance()))
                     return TypeInt.getInstance();
 
                 throw new RuntimeException("semantic error");

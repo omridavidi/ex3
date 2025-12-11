@@ -20,6 +20,9 @@ public class TypeArray extends Type
 	}
 
 	@Override
+	public boolean isArray(){ return true;}
+
+	@Override
 	public boolean isCompatibleWith(Type other) {
 		// other == TypeNil.getInstance() handles the nil case (typeNil is singleton)
 		if (other == TypeNil.getInstance()) {

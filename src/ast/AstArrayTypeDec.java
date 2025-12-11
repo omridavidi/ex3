@@ -32,11 +32,27 @@ public class AstArrayTypeDec extends AstDec
         if(type != null) AstGraphviz.getInstance().logEdge(serialNumber,type.serialNumber);
 	}
 
+
+
 	public TypeArray semantMe(){
+
+		// rule 1: type must not be void
+		// rule 2: An array type must be defined over a previously declared (non-void) type.
+
 		Type elementType = this.type.semantMe();
 
-		if (elementType == TypeVoid.getInstance()) throw new RuntimeException("semantic error");
-		if (SymbolTable.getInstance().findInCurrentScope(name) != null) throw new RuntimeException("semantic error");
+		// rule 1: type must not be void
+		if (elementType == TypeVoid.getInstance())
+			{
+				throw new RuntimeException("semantic error");
+			}
+		
+		// rule 2: An array type must be defined over a previously declared (non-void) type.
+
+		if (SymbolTable.getInstance().findInCurrentScope(name) != null)
+			{
+				throw new RuntimeException("semantic error");
+			}
 
 		TypeArray array = new TypeArray(name, elementType);
 		SymbolTable.getInstance().enter(name, array);

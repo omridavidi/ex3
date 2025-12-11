@@ -257,6 +257,8 @@ public class SymbolTable
 			/* [2] How should we handle void ??? */
 			/*************************************/
 
+			instance.enter("void", TypeVoid.getInstance());
+			
 			/***************************************/
 			/* [3] Enter library function PrintInt */
 			/***************************************/
@@ -267,6 +269,15 @@ public class SymbolTable
 					"PrintInt",
 					new TypeList(
 						TypeInt.getInstance(),
+						null)));
+
+			instance.enter(
+				"PrintString",
+				new TypeFunction(
+					TypeVoid.getInstance(),
+					"PrintString",
+					new TypeList(
+						TypeString.getInstance(),
 						null)));
 			
 		}
