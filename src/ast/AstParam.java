@@ -13,7 +13,7 @@ public class AstParam extends AstNode
 		serialNumber = AstNodeSerialNumber.getFresh();
 
 		System.out.format("====================== parameter -> type ID(%s)\n", name);
-
+		//	int add(int x) {}
 		this.type = type;
 		this.name = name;
 	}

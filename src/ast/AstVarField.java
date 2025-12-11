@@ -13,6 +13,7 @@ public class AstVarField extends AstVar
 		serialNumber = AstNodeSerialNumber.getFresh();
 
 		System.out.format("====================== var -> var . ID( %s )\n",fieldName);
+		// p.x
 
 		this.var = var;
 		this.fieldName = fieldName;
@@ -39,7 +40,7 @@ public class AstVarField extends AstVar
 		TypeClass varClass = (TypeClass)varType;
         while (varClass != null) {
             if (varClass.dataMembers != null) {
-                Type found = varClass.dataMembers.find(fieldName);
+                Type found = varClass.dataMembers.findElement(fieldName);
                 if (found != null)
                     return found;
             }

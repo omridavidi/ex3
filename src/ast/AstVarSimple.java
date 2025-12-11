@@ -12,7 +12,8 @@ public class AstVarSimple extends AstVar
 		serialNumber = AstNodeSerialNumber.getFresh();
 
 		System.out.format("====================== var -> ID( %s )\n",name);
-
+		// x
+		
 		this.name = name;
 	}
 

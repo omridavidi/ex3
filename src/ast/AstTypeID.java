@@ -12,7 +12,8 @@ public class AstTypeID extends AstNode
 		serialNumber = AstNodeSerialNumber.getFresh();
 
 		System.out.format("====================== ID: (%s)\n",ID);
-
+		// myVar
+		
 		this.ID = ID;
 	}
 

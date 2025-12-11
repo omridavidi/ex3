@@ -19,10 +19,8 @@ public class TypeArray extends Type
 		return this.getClass().getSimpleName();
 	}
 
-
-
 	@Override
-	public boolean isAssignableFrom(Type other) {
+	public boolean isCompatibleWith(Type other) {
 		// other == TypeNil.getInstance() handles the nil case (typeNil is singleton)
 		if (other == TypeNil.getInstance()) {
 			return true;

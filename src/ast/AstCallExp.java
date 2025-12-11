@@ -17,11 +17,18 @@ public class AstCallExp extends AstExp
         {
             System.out.format("====================== var(%s) DOT ID(%s) ( expList(%s) )\n",var, name, expList);
 			// x.foo(1, 2)
+
+			// x -> var
+			// foo -> name
+			// (1, 2) -> expList
 		}
         else
         {
             System.out.format("======================ID(%s) ( expList(%s) )\n",name, expList);
 			// foo(1, 2)
+
+			// foo -> name
+			// (1, 2) -> expList
 		}
 
         this.var = var;
@@ -49,22 +56,33 @@ public class AstCallExp extends AstExp
 
 	public Type semantMe()
 	{
+
+		// rule 1: Only previously defined functions or methods can be called.
+		// rule 2: When calling a function or method, each argument must have a type compatible with the corresponding parameter in its signature.
+		// rule 3: The type of a function or method call expression is the return type of the called function or method
+
 		TypeFunction function = null;
-		TypeList expectedParameters;
-		TypeList providedParameters = null;
-		
-		if (expList != null) 
-			{
-				providedParameters = expList.semantMe();
-			}
+		TypeList expectedParameters = null;
 			
-		if (var == null){
-			Type func = SymbolTable.getInstance().find(name);
-			if (!(func instanceof TypeFunction)) throw new RuntimeException("semantic error");
-			function = (TypeFunction) func;
+		if (var == null)
+		{
+			// FUNCTION CALL
+			
+			// rule 1: Only previously defined functions or methods can be called.
+			// check if FUNCTION with name exists in symbol table
+			Type varFunc = SymbolTable.getInstance().find(name);
+			if (!(varFunc instanceof TypeFunction)) throw new RuntimeException("semantic error");
+			function = (TypeFunction) varFunc;
 			expectedParameters = function.params;
 		}
 		else{
+			// METHOD CALL
+
+			// rule 1: Only previously defined functions or methods can be called.
+			// check if METHOD with name exists in symbol table
+
+
+			// if object is not of class type throw error
 			Type object = var.semantMe();
 			if (!(object instanceof TypeClass)) throw new RuntimeException("semantic error");
 			TypeClass objectClass = (TypeClass) object;
@@ -75,10 +93,8 @@ public class AstCallExp extends AstExp
 			Type foundDataMember = null;
 			while(objectClass != null){
 				if (objectClass.dataMembers != null){
-					TypeClassVarDec varDecDataMember = objectClass.dataMembers.findElement(name);
-					if (varDecDataMember != null){
-						foundDataMember = varDecDataMember.type;
-					}
+					foundDataMember = objectClass.dataMembers.findElement(name);
+
 					if (foundDataMember instanceof TypeFunction)  // current data member is a function 
 						{
 						function = (TypeFunction) foundDataMember;
@@ -88,20 +104,33 @@ public class AstCallExp extends AstExp
 				objectClass = objectClass.father;
 			}
 		}
-
-		TypeList expectedPointer = expectedParameters;
-		TypeList providedPointer = providedParameters;
 		
 
-		while(expectedPointer != null && providedPointer != null)
+		TypeList providedParameters = null;
+		if (expList != null) 
 		{
-			if (!expectedPointer.head.isAssignableFrom(providedPointer)) throw new RuntimeException("semantic error");
-			expectedPointer = expectedPointer.tail;
-			providedPointer = providedPointer.tail;
+			providedParameters = expList.semantMe();
 		}
 
-		if (expectedPointer != null || providedPointer != null) throw new RuntimeException("semantic error");
+		// rule 2: When calling a function or method, each argument must have a type compatible with the corresponding parameter in its signature.
+		// check parameters compatibility between expectedParameters and providedParameters
+
+		while(expectedParameters != null && providedParameters != null)
+		{
+			if (!expectedParameters.head.isCompatibleWith(providedParameters.head))
+				{
+					throw new RuntimeException("semantic error");
+				}
+			expectedParameters = expectedParameters.tail;
+			providedParameters = providedParameters.tail;
+		}
+
+
+		if (expectedParameters != null || providedParameters != null) throw new RuntimeException("semantic error");
 
 		return function.returnType;
+
+		// rule 3: The type of a function or method call expression is the return type of the called function or method
+		// checked outside of this semantme
 	}
 }

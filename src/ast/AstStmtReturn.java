@@ -44,7 +44,7 @@ public class AstStmtReturn extends AstStmt
             return null;
         }
 
-		if (!returnType.isAssignableFrom(expType)) throw new RuntimeException("semantic error");
+		if (!returnType.isCompatibleWith(expType)) throw new RuntimeException("semantic error");
 		return null;
 	}
 }

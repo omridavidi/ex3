@@ -42,7 +42,7 @@ public class AstStmtAssign extends AstStmt
 		if (var != null) t1 = var.semantMe();
 		if (exp != null) t2 = exp.semantMe();
 		
-        if (!t1.isAssignableFrom(t2)) throw new RuntimeException("semantic error");
+        if (!t1.isCompatibleWith(t2)) throw new RuntimeException("semantic error");
 		return null;
 	}
 }

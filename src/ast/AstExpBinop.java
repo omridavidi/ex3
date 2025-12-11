@@ -116,7 +116,7 @@ public class AstExpBinop extends AstExp
                 (t1 == TypeInt.getInstance() || t1 == TypeString.getInstance()))
                     return TypeInt.getInstance();
 
-                if (t1.isAssignableFrom(t2) || t2.isAssignableFrom(t1))
+                if (t1.isCompatibleWith(t2) || t2.isCompatibleWith(t1))
                     return TypeInt.getInstance();
 
                 if ((t1 instanceof TypeArray && t2 == TypeNil.getInstance()) ||

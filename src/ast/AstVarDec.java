@@ -16,10 +16,12 @@ public class AstVarDec extends AstDec
         if (exp != null)
         {
             System.out.format("====================== varDec -> TYPE ID(%s) := exp;\n", name);
+            // int x := 5;
         }
         else
         {
             System.out.format("====================== varDec -> TYPE ID(%s);\n",name);
+            // int x;
         }
 
         this.type = type;
@@ -58,7 +60,7 @@ public class AstVarDec extends AstDec
 			if (expType == TypeNil.getInstance()){
 				if(!(t instanceof TypeClass) && !(t instanceof TypeArray)) throw new RuntimeException("semantic error");
 			}
-			if (!t.isAssignableFrom(expType)) throw new RuntimeException("semantic error");
+			if (!t.isCompatibleWith(expType)) throw new RuntimeException("semantic error");
 		}		
 		SymbolTable.getInstance().enter(name, t);
 		return t;		

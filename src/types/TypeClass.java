@@ -44,16 +44,16 @@ public class TypeClass extends Type
 		return false;
 	}
 
-	public TypeClassVarDec findElement(String name)
+	public Type findClassElement(String name)
 	{
 		return this.dataMembers.findElement(name);
 	}
 
-	public TypeClassVarDec findElementInClassHierarchy(String name)
+	public Type findElementInClassHierarchy(String name)
 	{
 		TypeClass current = this;
 		while (current != null) {
-			TypeClassVarDec varDec = current.dataMembers.findElement(name);
+			Type varDec = current.dataMembers.findElement(name);
 			if (varDec != null) {
 				return varDec;
 			}
@@ -64,7 +64,7 @@ public class TypeClass extends Type
 
 
 	@Override
-	public boolean isAssignableFrom(Type other) {
+	public boolean isCompatibleWith(Type other) {
 		// other == TypeNil.getInstance() handles the nil case (typeNil is singleton)
 		if (other == TypeNil.getInstance()) {
 			return true;

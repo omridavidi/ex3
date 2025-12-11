@@ -60,11 +60,11 @@ public class AstVarSubscript extends AstExpVar
 		}
 
 		// rule 4: The resulting type is the element type T of the array that v is defined over.
-		
-		if (condition) {
-			
-		}
+		// TODO
 
+		
+		
+		return ((TypeArray)type).arrayDataType;
 
 
 
