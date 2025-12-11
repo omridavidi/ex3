@@ -47,8 +47,21 @@ public class TypeClass extends Type
 	public TypeClassVarDec findElement(String name)
 	{
 		return this.dataMembers.findElement(name);
-		
 	}
+
+	public TypeClassVarDec findElementInClassHierarchy(String name)
+	{
+		TypeClass current = this;
+		while (current != null) {
+			TypeClassVarDec varDec = current.dataMembers.findElement(name);
+			if (varDec != null) {
+				return varDec;
+			}
+			current = current.father;
+		}
+		return null;
+	}
+
 
 	@Override
 	public boolean isAssignableFrom(Type other) {

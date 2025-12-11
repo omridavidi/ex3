@@ -42,12 +42,25 @@ public class AstExpVarSubscript extends AstExpVar
 		
 		Type type = var.SemantMe();
 		
-		// cannot subscript a non array type
+		// rule 1: The type of the variable v must be of an array.
 		if (!(type instanceof TypeArray))
             throw new RuntimeException("semantic error");
 		
+		// rule 2: The subscript expression e must be of type int.
+        Type subscriptType = subscript.SemantMe();
+        if (subscriptType != TypeInt.getInstance())
+            throw new RuntimeException("semantic error");
 
+		// rule 3: If e is a constant expression, it must be greater than or equal to zero
+		if (subscript instanceof AstExpInt)
+		{
+			AstExpInt constExp = (AstExpInt) subscript;
+			if (constExp.value < 0)
+				throw new RuntimeException("semantic error");
+		}
+		
 
+		
 
 
 

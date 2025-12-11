@@ -273,3 +273,46 @@ public class SymbolTable
 		return instance;
 	}
 }
+
+
+
+
+
+
+/*Omer's
+	public String getScope() {
+        SymbolTableEntry cur = top;
+
+        while (cur != null) {
+            if (cur.name.equals("SCOPE-BOUNDARY"))
+                return "GLOBAL";
+            if (cur.name.equals("BLOCK"))
+                return "BLOCK";
+            if (cur.name.equals("FUNC"))
+                return "FUNCTION";
+            if (cur.name.equals("CLASS"))
+                return "CLASS";
+
+            cur = cur.prevtop;
+        }
+
+        return "GLOBAL";
+    }
+
+	public Type findInCurrentScope(String name) {
+    	SymbolTableEntry cur = top;
+
+    	while (cur != null) {
+        	if (cur.name.equals("SCOPE-BOUNDARY"))
+            	return null;
+        	if (cur.name.equals(name))
+            	return cur.type;
+
+        	cur = cur.prevtop;
+    	}
+
+    	return null;
+	}
+	*/
+
+
