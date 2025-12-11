@@ -17,12 +17,13 @@ public class TypeClassVarDecList
 		return 1 + this.tail.size();
 	}
 
-	public TypeClassVarDec get(String name) {
+	public TypeClassVarDec findElement(String name) {
+		// return the TypeClassVarDec with the given name, or null if not found
 		if (this.head.name.equals(name)) {
 			return this.head;
 		}
 		if (this.tail != null) {
-			return this.tail.get(name);
+			return this.tail.findElement(name);
 		}
 		return null;
 	}

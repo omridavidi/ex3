@@ -2,12 +2,14 @@ package types;
 
 public class TypeClassVarDec
 {
-	public Type t;
+	public Type type;
 	public String name;
 	
-	public TypeClassVarDec(Type t, String name)
+	// both for data members and methods
+
+	public TypeClassVarDec(Type type, String name)
 	{
-		this.t = t;
+		this.type = type;
 		this.name = name;
 	}
 }

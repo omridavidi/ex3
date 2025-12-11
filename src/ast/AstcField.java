@@ -12,7 +12,10 @@ public class AstcField extends AstNode
 		serialNumber = AstNodeSerialNumber.getFresh();
 
 		System.out.format("====================== cField -> Dec)\n");
-
+		/* class point{
+			int x; <-- cField
+			}
+		*/
 		this.dec = dec;
 	}
 

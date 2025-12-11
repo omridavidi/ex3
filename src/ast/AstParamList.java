@@ -13,8 +13,11 @@ public class AstParamList extends AstNode
 		serialNumber = AstNodeSerialNumber.getFresh();
 
 		if (paramList != null) System.out.print("====================== params -> param params\n");
-		if (paramList == null) System.out.print("====================== params -> param      \n");
+		// int add(int x, int y) {}
 
+		if (paramList == null) System.out.print("====================== params -> param      \n");
+		// int add(int x) {}
+		
 		this.param = param;
 		this.paramList = paramList;
 	}
@@ -34,7 +37,7 @@ public class AstParamList extends AstNode
 		if (paramList != null) AstGraphviz.getInstance().logEdge(serialNumber,paramList.serialNumber);
 	}
 	
-	public Type semantMe(){
+	public TypeList semantMe(){
 		Type paramType = param.semantMe();
 		if (paramType == TypeVoid.getInstance()) throw new RuntimeException("semantic error");
 
@@ -43,4 +46,10 @@ public class AstParamList extends AstNode
 
 		return new TypeList(paramType, paramListType);
 	}
+
+	public TypeList buildTypeList() {
+        Type headType = param.type.semantMe();
+        TypeList tailTypes = (paramList != null ? paramList.buildTypeList() : null);
+        return new TypeList(headType, tailTypes);
+    }
 }

@@ -14,6 +14,8 @@ public class AstExpVarField extends AstExpVar
 		serialNumber = AstNodeSerialNumber.getFresh();
 
 		System.out.format("====================== var -> var DOT ID( %s )\n",fieldName);
+		// x.a
+		
 		this.var = var;
 		this.fieldName = fieldName;
 	}

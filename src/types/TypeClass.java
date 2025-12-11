@@ -12,12 +12,12 @@ public class TypeClass extends Type
 	/* Note that data members coming from the AST are */
 	/* packed together with the class methods         */
 	/**************************************************/
-	public TypeList dataMembers;
+	public TypeClassVarDecList dataMembers;
 	
 	/****************/
 	/* CTROR(S) ... */
 	/****************/
-	public TypeClass(TypeClass father, String name, TypeList dataMembers)
+	public TypeClass(TypeClass father, String name, TypeClassVarDecList dataMembers)
 	{
 		this.name = name;
 		this.father = father;
@@ -44,8 +44,11 @@ public class TypeClass extends Type
 		return false;
 	}
 
-
-
+	public TypeClassVarDec findElement(String name)
+	{
+		return this.dataMembers.findElement(name);
+		
+	}
 
 	@Override
 	public boolean isAssignableFrom(Type other) {

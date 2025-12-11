@@ -14,7 +14,11 @@ public class AstcFieldList extends AstNode
 
 		if (cField == null) System.out.print("====================== cFieldList -> cField\n");
         else System.out.print("====================== cFieldList -> cField cFieldList\n");
-		
+		/* class point{
+			int x; <-- cField 
+			int y; <-- cField 
+			}
+		*/
         this.cField = cField;
 		this.cFieldList = cFieldList;
 	}

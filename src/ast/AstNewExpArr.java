@@ -12,6 +12,7 @@ public class AstNewExpArr extends AstNewExp
     {
         serialNumber = AstNodeSerialNumber.getFresh();
         System.out.print("====================== newExp -> NEW type [exp]\n");
+        // a := NEW int[10]; <-- from NEW till [10] 
 
         this.type  = type;
         this.size  = size;
@@ -36,7 +37,7 @@ public class AstNewExpArr extends AstNewExp
         Type t = type.semantMe();
         if (t = TypeVoid.getInstance()) throw new RuntimeException("semantic error");
        
-        Type sizeType = size.SemantMe();
+        Type sizeType = size.semantMe();
         if (sizeType != TypeInt.getInstance()) throw new RuntimeException("semantic error");
 
         if (size instanceof AstExpInt) {

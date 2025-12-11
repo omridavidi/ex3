@@ -16,11 +16,13 @@ public class AstCallExp extends AstExp
         if (var != null)
         {
             System.out.format("====================== var(%s) DOT ID(%s) ( expList(%s) )\n",var, name, expList);
-        }
+			// x.foo(1, 2)
+		}
         else
         {
             System.out.format("======================ID(%s) ( expList(%s) )\n",name, expList);
-        }
+			// foo(1, 2)
+		}
 
         this.var = var;
 		this.name = name;
@@ -45,7 +47,8 @@ public class AstCallExp extends AstExp
 		if (expList != null) AstGraphviz.getInstance().logEdge(serialNumber, expList.serialNumber);
 	}
 
-	public Type semantMe(){
+	public Type semantMe()
+	{
 		TypeFunction function = null;
 		TypeList expectedParameters;
 		TypeList providedParameters = null;
@@ -64,24 +67,34 @@ public class AstCallExp extends AstExp
 		else{
 			Type object = var.semantMe();
 			if (!(object instanceof TypeClass)) throw new RuntimeException("semantic error");
-			TypeClass class = (TypeClass) object;
+			TypeClass objectClass = (TypeClass) object;
 
-			while(object != null){
-				if (object.dataMembers != null){
-					Type foundDataMember = object.dataMembers.find(name);
-					if (foundDataMember instanceof TypeFunction){
+			// find function in class data members with a certain name
+			// if not found, go to father class and repeat
+
+			Type foundDataMember = null;
+			while(objectClass != null){
+				if (objectClass.dataMembers != null){
+					TypeClassVarDec varDecDataMember = objectClass.dataMembers.findElement(name);
+					if (varDecDataMember != null){
+						foundDataMember = varDecDataMember.type;
+					}
+					if (foundDataMember instanceof TypeFunction)  // current data member is a function 
+						{
 						function = (TypeFunction) foundDataMember;
 						break;
-					}
+						}
 				}
-				object = object.father;
+				objectClass = objectClass.father;
 			}
 		}
 
 		TypeList expectedPointer = expectedParameters;
 		TypeList providedPointer = providedParameters;
+		
 
-		while(expectedPointer != null && providedPointer != null){
+		while(expectedPointer != null && providedPointer != null)
+		{
 			if (!expectedPointer.head.isAssignableFrom(providedPointer)) throw new RuntimeException("semantic error");
 			expectedPointer = expectedPointer.tail;
 			providedPointer = providedPointer.tail;

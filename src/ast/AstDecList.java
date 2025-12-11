@@ -14,7 +14,15 @@ public class AstDecList extends AstNode
 		serialNumber = AstNodeSerialNumber.getFresh();
 
 		if (tail != null) System.out.print("====================== decList -> dec decList\n");
+		/* CLASS Point {
+				int x;
+				int y;
+			}
 
+			int foo(int a) {
+				return a + x;
+			}
+		*/
 		this.head = head;
 		this.tail = tail;
 	}

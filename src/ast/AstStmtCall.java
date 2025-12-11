@@ -12,7 +12,8 @@ public class AstStmtCall extends AstStmt
 		serialNumber = AstNodeSerialNumber.getFresh();
 
 		System.out.print("====================== stmt -> callExp;\n");
-
+		// foo(x, y + 1);
+		
 		this.call = call;
 	}
 

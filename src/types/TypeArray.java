@@ -28,12 +28,8 @@ public class TypeArray extends Type
 			return true;
 		}
 
-		if(!(other instanceof TypeArray)) {
-			return false;
-		}
-		TypeArray otherArray = (TypeArray) other;
-		return this.arrayDataType.isAssignableFrom(otherArray.arrayDataType);
-
+		return false;
+		
 	}
 
 	

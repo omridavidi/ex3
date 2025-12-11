@@ -13,6 +13,8 @@ public class AstExpString extends AstExp
 		serialNumber = AstNodeSerialNumber.getFresh();
 
 		System.out.format("====================== exp -> STRING( %s )\n", value);
+		// "hello"
+		
 		this.value = value;
 	}
 

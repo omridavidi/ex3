@@ -15,7 +15,16 @@ public class AstFuncDec extends AstDec
 		serialNumber = AstNodeSerialNumber.getFresh();
 	
 		if (paramList == null) System.out.format("====================== funcDec -> type ID(%s) () {stmtList}\n", name);
-        else System.out.format("====================== funcDec -> type ID(%s) (paramList) {stmtList}\n", name);
+        /* int getFive() {
+				return 5;
+			}
+		*/
+		
+		else System.out.format("====================== funcDec -> type ID(%s) (paramList) {stmtList}\n", name);
+		/* int add(int x, int y) {
+				return x + y;
+			}
+		*/
 
 		this.type = type;
 		this.name = name;

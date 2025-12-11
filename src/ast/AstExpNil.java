@@ -12,6 +12,8 @@ public class AstExpNil extends AstExp
 		serialNumber = AstNodeSerialNumber.getFresh();
 
 		System.out.format("====================== exp -> NIL\n");
+		// nil
+		
 	}
 
 	public void printMe()

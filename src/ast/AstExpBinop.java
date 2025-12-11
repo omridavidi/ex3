@@ -21,7 +21,8 @@ public class AstExpBinop extends AstExp
 	{
 		serialNumber = AstNodeSerialNumber.getFresh();
 		System.out.print("====================== exp -> exp BINOP exp\n");
-
+		// x = a + b
+		
 		this.left = left;
 		this.right = right;
 		this.op = op;

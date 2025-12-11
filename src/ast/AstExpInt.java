@@ -13,7 +13,8 @@ public class AstExpInt extends AstExp
 		serialNumber = AstNodeSerialNumber.getFresh();
 
 		System.out.format("====================== exp -> INT( %d )\n", value);
-
+		// 5
+		
 		this.value = value;
 	}
 

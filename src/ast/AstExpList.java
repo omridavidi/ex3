@@ -14,7 +14,8 @@ public class AstExpList extends AstNode
 		serialNumber = AstNodeSerialNumber.getFresh();
 
 		if (tail != null) System.out.print("====================== ExpList -> Exp ExpList\n");
-
+		// foo(1, x + 2, 3 * y) <-- (from 1 to y)
+		
 		this.head = head;
 		this.tail = tail;
 	}

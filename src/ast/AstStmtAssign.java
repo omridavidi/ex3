@@ -13,7 +13,8 @@ public class AstStmtAssign extends AstStmt
 		serialNumber = AstNodeSerialNumber.getFresh();
 
 		System.out.print("====================== stmt -> var := exp ;\n");
-
+		// // x := y + 1;
+		
 		this.var = var;
 		this.exp = exp;
 	}

@@ -16,4 +16,6 @@ public class TypeList
 		this.head = head;
 		this.tail = tail;
 	}
+
+	
 }

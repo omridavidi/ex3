@@ -2,6 +2,10 @@ package types;
 
 public class TypeVoid extends Type
 {
+	/**************************************/
+	/* USUAL SINGLETON IMPLEMENTATION ... */
+	/**************************************/
+
 	private static TypeVoid instance = null;
 
 	protected TypeVoid() {}

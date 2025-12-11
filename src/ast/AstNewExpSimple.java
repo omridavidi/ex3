@@ -11,7 +11,8 @@ public class AstNewExpSimple extends AstNewExp
     {
         serialNumber = AstNodeSerialNumber.getFresh();
         System.out.print("====================== newExp -> NEW type\n");
-        
+        // p := NEW Point; <-- "NEW Point" is NewExpSimple
+
         this.type = type;
     }
 

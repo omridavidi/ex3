@@ -17,11 +17,13 @@ public class AstClassDec extends AstDec
         if (superName != null)
         {
             System.out.format("====================== classDec -> CLASS ID(%s) EXTENDS ID(%s) { cFieldList } \n",name, superName);
-        }
+			// class animal {}
+		}
         else
         {
             System.out.format("====================== classDec -> CLASS ID(%s) { cFieldList } \n",name);
-        }
+			// class dog extends animal {}
+		}
 
         this.name = name;
         this.superName = superName;
@@ -55,11 +57,13 @@ public class AstClassDec extends AstDec
 	{	
 		SymbolTable symTable = SymbolTable.getInstance();
 
+		//Assert no existing function/variable with same name
 		if (symTable.findInCurrentScope(name) != null)
 		{
 			throw new RuntimeException("semantic error");
 		}
 
+		//Assert super class is really a class
 		TypeClass superClassType = null;
 		if (superName != null)
 		{
@@ -68,6 +72,7 @@ public class AstClassDec extends AstDec
 			superClassType = (TypeClass)superType;
 		}
 
+		//Assert no overloading + shadowing
 		if (cFieldList != null){
 			HashSet<String> fieldNames = new HashSet<String>();
 			for (AstcFieldList it = cFieldList; it != null; it = it.cFieldList){
@@ -81,57 +86,67 @@ public class AstClassDec extends AstDec
 			}
 		}
 
+		//Assert no shadowing on parent classes
 		if (superClassType != null) {
             for (AstcFieldList it = cFieldList; it != null; it = it.cFieldList) {
                 AstDec dec = it.cField.dec;
 
                 if (dec instanceof AstVarDec) {
                     AstVarDec vd = (AstVarDec) dec;
-                    if (findInParentChain(superClassType, vd.name) != null) {
-                        throw new RuntimeException("semantic error");
-                    }
-                } else if (dec instanceof AstFuncDec) {
+                    if (superClassType.findElementInClassHierarchy(vd.name) != null) throw new RuntimeException("semantic error");
+                }
+				else if (dec instanceof AstFuncDec) {
                     AstFuncDec fd = (AstFuncDec) dec;
-                    Type parentMember = findInParentChain(superClassType, fd.name);
+                    TypeClassVarDec varDecParentField = superClassType.findElementInClassHierarchy(fd.name);
+					Type ParentField = null;
+					if (varDecParentField != null) {
+						ParentField = varDecParentField.type;
+					}
 
-                    if (parentMember != null) {
-                        if (!(parentMember instanceof TypeFunction)) {
-                            throw new RuntimeException("semantic error");
-                        }
+                    if (ParentField != null) {
+                        if (!(ParentField instanceof TypeFunction)) throw new RuntimeException("semantic error");
 
-                        TypeFunction parentFunc = (TypeFunction) parentMember;
-                        Type retType = fd.retType.semantMe();
-                        TypeList params = (fd.args != null ? fd.args.buildTypeList() : null);
+                        TypeFunction parentFunc = (TypeFunction) ParentField;
+                        Type retType = fd.type.semantMe();
+                        TypeList params = (fd.paramList != null ? fd.paramList.buildTypeList() : null);
 
-                        if (!signaturesMatch(parentFunc, retType, params)) {
-                            throw new RuntimeException("semantic error");
-                        }
+                        if (!signaturesMatch(parentFunc, retType, params)) throw new RuntimeException("semantic error");
                     }
                 }
             }
         }
 
-		/*
-		- TODO
-		- Finish code below to cover all checks from line 85 Omer
-		- Add check for field shadowing a method in superclass
-		- Change findInParentChain call to match omri implementation
-		*/
-
-		TypeClass classType = new TypeClass(name, superClassType);
+		TypeClass classType = new TypeClass(superClassType, name, null);
 		symTable.enter(name, classType);
 
 		symTable.beginScope();
 
-		if (cFieldList != null)
-		{
-			cFieldList.semantMe(classType);
-		}
+		TypeClass prevClass = symTable.getCurrentClass();
+        symTable.setCurrentClass(classType);
+
+		if (cFieldList != null) cFieldList.semantMe();
+
+		symTable.setCurrentClass(prevClass);
 
 		symTable.endScope();
 
 		return classType;
 	}
+
+	private boolean signaturesMatch(TypeFunction parentFunc, Type retType, TypeList params) {
+        if (parentFunc.returnType != retType) return false;
+        
+        TypeList p1 = parentFunc.params;
+        TypeList p2 = params;
+        
+        while (p1 != null && p2 != null) {
+            if (p1.head != p2.head) return false;
+            p1 = p1.tail;
+            p2 = p2.tail;
+        }
+        
+        return p1 == null && p2 == null;
+    }
 }
 
 
