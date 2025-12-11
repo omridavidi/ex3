@@ -13,6 +13,9 @@ public class AstStmtWhile extends AstStmt
 		serialNumber = AstNodeSerialNumber.getFresh();
 
 		System.out.print("====================== stmt -> WHILE (exp) {stmtList}\n");
+		/* WHILE (i < 10) {
+        //     i := i + 1;
+        } */
 
 		this.condition = condition;
 		this.body = body;

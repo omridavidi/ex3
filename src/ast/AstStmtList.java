@@ -14,7 +14,15 @@ public class AstStmtList extends AstNode
 		serialNumber = AstNodeSerialNumber.getFresh();
 
 		if (tail != null) System.out.print("====================== stmts -> stmt stmts\n");
+		/* {
+				x := 5;
+				y := x + 1;
+		} */
+
 		if (tail == null) System.out.print("====================== stmts -> stmt      \n");
+		/* {
+				x := 5;
+		} */
 
 		this.head = head;
 		this.tail = tail;

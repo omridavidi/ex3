@@ -12,7 +12,8 @@ public class AstType extends AstNode
 		serialNumber = AstNodeSerialNumber.getFresh();
 	
 		System.out.format("====================== type(%s)\n",type);
-
+		// int
+		
 		this.type = type;
 	}
 
