@@ -63,12 +63,6 @@ public class AstCallExp extends AstExp
 
 		TypeFunction function = null;
 		TypeList expectedParameters = null;
-		TypeList providedParameters = null;
-		
-		if (expList != null) 
-			{
-				providedParameters = expList.semantMe();
-			}
 			
 		if (var == null)
 		{
@@ -109,17 +103,13 @@ public class AstCallExp extends AstExp
 				}
 				objectClass = objectClass.father;
 			}
-			if (function != null) expectedParameters = function.params;
 		}
 		
-		TypeList expectedPointer = expectedParameters;
-		TypeList providedPointer = providedParameters;
-		
-		while(expectedPointer != null && providedPointer != null)
+
+		TypeList providedParameters = null;
+		if (expList != null) 
 		{
-			if (!expectedPointer.head.isAssignableFrom(providedPointer.head)) throw new RuntimeException("semantic error");
-			expectedPointer = expectedPointer.tail;
-			providedPointer = providedPointer.tail;
+			providedParameters = expList.semantMe();
 		}
 
 		// rule 2: When calling a function or method, each argument must have a type compatible with the corresponding parameter in its signature.
