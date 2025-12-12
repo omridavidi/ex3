@@ -35,7 +35,7 @@ public class AstNewExpArr extends AstNewExp
 
     public Type semantMe(){
         Type t = type.semantMe();
-        if (t = TypeVoid.getInstance()) throw new RuntimeException("semantic error");
+        if (t == TypeVoid.getInstance()) throw new RuntimeException("semantic error");
        
         Type sizeType = size.semantMe();
         if (sizeType != TypeInt.getInstance()) throw new RuntimeException("semantic error");
@@ -44,5 +44,6 @@ public class AstNewExpArr extends AstNewExp
             AstExpInt sizeInt = (AstExpInt) size;
             if (sizeInt.value <= 0) throw new RuntimeException("semantic error");
         }
+        return new TypeArray(t.name, t);
     }
 }

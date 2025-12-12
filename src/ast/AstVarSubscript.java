@@ -7,15 +7,11 @@ import types.*;
 
 public class AstVarSubscript extends AstExpVar
 {
-
-
 	// 	Accessing an array: Elements of an array can be accessed using v[e], with the following rules:
 		// rule 1: The type of the variable v must be of an array.
 		// rule 2: The subscript expression e must be of type int.
 		// rule 3: If e is a constant expression, it must be greater than or equal to zero
 		// rule 4: The resulting type is the element type T of the array that v is defined over.
-
-
 
 	public AstExpVar var;
 	public AstExp subscript;
@@ -60,13 +56,6 @@ public class AstVarSubscript extends AstExpVar
 		}
 
 		// rule 4: The resulting type is the element type T of the array that v is defined over.
-		
-		if (condition) {
-			
-		}
-
-
-
-
+		return ((TypeArray) type).arrayDataType;
 	}
 }

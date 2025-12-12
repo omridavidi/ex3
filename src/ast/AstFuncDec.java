@@ -59,7 +59,7 @@ public class AstFuncDec extends AstDec
 		/*******************/
 		/* [0] return type */
 		/*******************/
-		returnType = SymbolTable.getInstance().find(returnTypeName);
+		returnType = SymbolTable.getInstance().find(type.type);
 		if (returnType == null) throw new RuntimeException("semantic error");
 	
 		/****************************/
@@ -70,21 +70,21 @@ public class AstFuncDec extends AstDec
 		/***************************/
 		/* [2] Semant Input Params */
 		/***************************/
-		for (AstTypeNameList it = params; it  != null; it = it.tail)
+		for (AstParamList it = paramList; it  != null; it = it.paramList)
 		{
-			t = SymbolTable.getInstance().find(it.head.type);
+			t = SymbolTable.getInstance().find(it.param.name);
 			if (t == null) throw new RuntimeException("semantic error");
 			else
 			{
 				type_list = new TypeList(t,type_list);
-				SymbolTable.getInstance().enter(it.head.name,t);
+				SymbolTable.getInstance().enter(it.param.name,t);
 			}
 		}
 
 		/*******************/
 		/* [3] Semant Body */
 		/*******************/
-		body.semantMe();
+		stmtList.semantMe();
 
 		/*****************/
 		/* [4] End Scope */

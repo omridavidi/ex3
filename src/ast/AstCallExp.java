@@ -50,7 +50,7 @@ public class AstCallExp extends AstExp
 	public Type semantMe()
 	{
 		TypeFunction function = null;
-		TypeList expectedParameters;
+		TypeList expectedParameters = null;
 		TypeList providedParameters = null;
 		
 		if (expList != null) 
@@ -87,15 +87,15 @@ public class AstCallExp extends AstExp
 				}
 				objectClass = objectClass.father;
 			}
+			if (function != null) expectedParameters = function.params;
 		}
-
+		
 		TypeList expectedPointer = expectedParameters;
 		TypeList providedPointer = providedParameters;
 		
-
 		while(expectedPointer != null && providedPointer != null)
 		{
-			if (!expectedPointer.head.isAssignableFrom(providedPointer)) throw new RuntimeException("semantic error");
+			if (!expectedPointer.head.isAssignableFrom(providedPointer.head)) throw new RuntimeException("semantic error");
 			expectedPointer = expectedPointer.tail;
 			providedPointer = providedPointer.tail;
 		}
