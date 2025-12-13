@@ -75,12 +75,12 @@ public class AstClassDec extends AstDec
 		//Assert no overloading + shadowing
 		if (cFieldList != null){
 			HashSet<String> fieldNames = new HashSet<String>();
-			for (AstcFieldList cFieldNode = cFieldList; cFieldNode != null; cFieldNode = cFieldNode.cFieldList){
+			for (AstcFieldList cFieldNode = cFieldList; cFieldNode != null; cFieldNode = cFieldNode.tail){
 				String fieldName = null;
-				if (cFieldNode.cField.dec instanceof AstVarDec) fieldName = ((AstVarDec)cFieldNode.cField.dec).name;
-				else if (cFieldNode.cField.dec instanceof AstFuncDec) fieldName = ((AstFuncDec)cFieldNode.cField.dec).name;
-				else if (cFieldNode.cField.dec instanceof AstClassDec) fieldName = ((AstClassDec)cFieldNode.cField.dec).name;
-				else if (cFieldNode.cField.dec instanceof AstArrayTypeDec) fieldName = ((AstArrayTypeDec)cFieldNode.cField.dec).name;
+				if (cFieldNode.head.dec instanceof AstVarDec) fieldName = ((AstVarDec)cFieldNode.head.dec).name;
+				else if (cFieldNode.head.dec instanceof AstFuncDec) fieldName = ((AstFuncDec)cFieldNode.head.dec).name;
+				else if (cFieldNode.head.dec instanceof AstClassDec) fieldName = ((AstClassDec)cFieldNode.head.dec).name;
+				else if (cFieldNode.head.dec instanceof AstArrayTypeDec) fieldName = ((AstArrayTypeDec)cFieldNode.head.dec).name;
 		
 				// now fieldName is set to the name of the field
 				// check for duplicates within the current class
@@ -91,8 +91,8 @@ public class AstClassDec extends AstDec
 
 		//Assert no shadowing on parent classes
 		if (superClassType != null) {
-            for (AstcFieldList cFieldNode = cFieldList; cFieldNode != null; cFieldNode = cFieldNode.cFieldList) {
-                AstDec dec = cFieldNode.cField.dec;
+            for (AstcFieldList cFieldNode = cFieldList; cFieldNode != null; cFieldNode = cFieldNode.tail) {
+                AstDec dec = cFieldNode.head.dec;
 
                 if (dec instanceof AstVarDec) {
                     AstVarDec vd = (AstVarDec) dec;
@@ -115,7 +115,8 @@ public class AstClassDec extends AstDec
             }
         }
 
-		TypeClass classType = new TypeClass(superClassType, name, null);
+		TypeClassVarDecList dataMembers = TypeClassVarDecList.classVarDecListFromAst(cFieldList);
+		TypeClass classType = new TypeClass(superClassType, name, dataMembers);
 		symTable.enter(name, classType);
 
 		symTable.beginScope();

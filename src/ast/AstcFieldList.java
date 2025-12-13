@@ -5,8 +5,8 @@ import types.*;
 
 public class AstcFieldList extends AstNode
 {
-	public AstcField cField;
-	public AstcFieldList cFieldList;
+	public AstcField head;
+	public AstcFieldList tail;
 
 	public AstcFieldList(AstcField cField, AstcFieldList cFieldList)
 	{
@@ -19,26 +19,26 @@ public class AstcFieldList extends AstNode
 			int y; <-- cField 
 			}
 		*/
-        this.cField = cField;
-		this.cFieldList = cFieldList;
+        this.head = cField;
+		this.tail = cFieldList;
 	}
 
 	public void printMe()
 	{
 		System.out.format("AST CFIELD LIST\n");
 
-		if (cField != null) cField.printMe();
-		if (cFieldList != null) cFieldList.printMe();
+		if (head != null) head.printMe();
+		if (tail != null) tail.printMe();
 
 		AstGraphviz.getInstance().logNode(serialNumber, "CFIELD LIST\n");
 		
-		if (cField != null) AstGraphviz.getInstance().logEdge(serialNumber,cField.serialNumber);
-		if (cFieldList != null) AstGraphviz.getInstance().logEdge(serialNumber,cFieldList.serialNumber);
+		if (head != null) AstGraphviz.getInstance().logEdge(serialNumber,head.serialNumber);
+		if (tail != null) AstGraphviz.getInstance().logEdge(serialNumber,tail.serialNumber);
 	}
 	
 	public Type semantMe(){
-		if (cField != null) cField.semantMe();
-		if (cFieldList != null) cFieldList.semantMe();
+		if (head != null) head.semantMe();
+		if (tail != null) tail.semantMe();
 		return null;
 	}
 }
