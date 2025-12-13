@@ -13,6 +13,8 @@ public class AstNewExpArr extends AstNewExp
         serialNumber = AstNodeSerialNumber.getFresh();
         System.out.print("====================== newExp -> NEW type [exp]\n");
         // a := NEW int[10]; <-- from NEW till [10] 
+        // int -> type
+        // 10 -> size
 
         this.type  = type;
         this.size  = size;
@@ -34,12 +36,22 @@ public class AstNewExpArr extends AstNewExp
     }
 
     public Type semantMe(){
+        // Allocating an array: An array is allocated using new T[e], with the following rules:
+        // rule 1: T is a previously declared type.
+        // rule 2: The size expression e must be of type int.
+        // rule 3: If e is a constant expression, it must be greater than 0.
+
+
+        // rule 1: T is a previously declared type.
         Type t = type.semantMe();
-        if (t == TypeVoid.getInstance()) throw new RuntimeException("semantic error");
-       
+        if (!(t instanceof TypeArray)) throw new RuntimeException("semantic error");
+        if (SymbolTable.getInstance().find(t.name) == null) throw new RuntimeException("semantic error");
+        
+        // rule 2: The size expression e must be of type int.
         Type sizeType = size.semantMe();
         if (sizeType != TypeInt.getInstance()) throw new RuntimeException("semantic error");
 
+        // rule 3: If e is a constant expression, it must be greater than 0.
         if (size instanceof AstExpInt) {
             AstExpInt sizeInt = (AstExpInt) size;
             if (sizeInt.value <= 0) throw new RuntimeException("semantic error");

@@ -15,15 +15,24 @@ public class AstFuncDec extends AstDec
 		serialNumber = AstNodeSerialNumber.getFresh();
 	
 		if (paramList == null) System.out.format("====================== funcDec -> type ID(%s) () {stmtList}\n", name);
-        /* int getFive() {
+        /* int retFive() {
 				return 5;
 			}
+			int -> type
+			retFive -> ID
+			null -> paramList
+			{ return 5; } -> stmtList
 		*/
 		
 		else System.out.format("====================== funcDec -> type ID(%s) (paramList) {stmtList}\n", name);
 		/* int add(int x, int y) {
 				return x + y;
 			}
+		
+			int -> type
+			add -> ID
+			(int x, int y) -> paramList
+			{ return x + y; } -> stmtList
 		*/
 
 		this.type = type;
@@ -52,53 +61,33 @@ public class AstFuncDec extends AstDec
 
 	public Type semantMe()
 	{
-		Type t;
+		Type paramName;
 		Type returnType = null;
 		TypeList type_list = null;
 
-		/*******************/
-		/* [0] return type */
-		/*******************/
-		returnType = SymbolTable.getInstance().find(type.type);
+		returnType = type.semantMe();
 		if (returnType == null) throw new RuntimeException("semantic error");
 	
-		/****************************/
-		/* [1] Begin Function Scope */
-		/****************************/
 		SymbolTable.getInstance().beginScope();
 
-		/***************************/
-		/* [2] Semant Input Params */
-		/***************************/
 		for (AstParamList it = paramList; it  != null; it = it.paramList)
 		{
-			t = SymbolTable.getInstance().find(it.param.name);
-			if (t == null) throw new RuntimeException("semantic error");
+			paramName = SymbolTable.getInstance().find(it.param.name);
+			if (paramName == null) throw new RuntimeException("semantic error");
 			else
 			{
-				type_list = new TypeList(t,type_list);
-				SymbolTable.getInstance().enter(it.param.name,t);
+				type_list = new TypeList(paramName,type_list);
+				SymbolTable.getInstance().enter(it.param.name,paramName);
+				weird 												^
 			}
 		}
 
-		/*******************/
-		/* [3] Semant Body */
-		/*******************/
 		stmtList.semantMe();
 
-		/*****************/
-		/* [4] End Scope */
-		/*****************/
 		SymbolTable.getInstance().endScope();
 
-		/***************************************************/
-		/* [5] Enter the Function Type to the Symbol Table */
-		/***************************************************/
 		SymbolTable.getInstance().enter(name,new TypeFunction(returnType,name,type_list));
 
-		/************************************************************/
-		/* [6] Return value is irrelevant for function declarations */
-		/************************************************************/
 		return null;		
 	}
 }

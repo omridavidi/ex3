@@ -19,6 +19,7 @@ import types.*;
 public class SymbolTable
 {
 	private int hashArraySize = 13;
+	private TypeClass myClass = null;
 	
 	/**********************************************/
 	/* The actual symbol table data structure ... */
@@ -41,6 +42,18 @@ public class SymbolTable
 		if (s.charAt(0) == 'f') {return 6;}
 		if (s.charAt(0) == 'S') {return 6;}
 		return 12;
+	}
+
+	/**********************************************/
+	/* Helper functions ... */
+	/**********************************************/
+
+	public void setCurrentClass(TypeClass cls) {
+		this.myClass = cls;
+	}
+
+	public TypeClass getCurrentClass() {
+		return this.myClass;
 	}
 
 	/****************************************************************************/
@@ -83,7 +96,80 @@ public class SymbolTable
 	/***********************************************/
 	/* Find the inner-most scope element with name */
 	/***********************************************/
+	
+	public Type lookupLocal(String name)
+	{
+    	for (SymbolTableEntry entry = top; entry != null; entry = entry.prevtop)
+	 	{
+			// End of current scope
+			if ("SCOPE-BOUNDARY".equals(entry.name)) {
+				break;
+			}
+
+			// Found in this scope
+			if (name.equals(entry.name)) {
+				return entry.type;
+			}
+		}
+
+		// Not found in this scope
+		return null;
+	}
+
+
+	private Type lookupInClassHierarchy(String name)
+	{
+    	if (myClass == null) {
+        	return null;
+    	}
+
+    	for (TypeClass cls = myClass; cls != null; cls = cls.father) {
+        	if (cls.dataMembers != null) {
+            	Type found = cls.dataMembers.findElement(name); //TODO - same as omer???
+            	if (found != null) {
+                	return found;
+            	}
+        	}
+   		}
+
+		// Not found in class or in inheritance hierarchy
+    	return null;
+	}
+	
+	private Type lookupGlobal(String name)
+	{
+		SymbolTableEntry e;
+				
+		for (e = table[hash(name)]; e != null; e = e.next)
+		{
+			if (name.equals(e.name))
+			{
+				return e.type;
+			}
+		}
+
+    	return null;
+	}
+
 	public Type find(String name)
+	{
+    	// Search in current scope
+    	Type t = lookupLocal(name);
+    	if (t != null) {
+        	return t;
+    	}
+
+    	// Search in current class or in inheritance hierarchy
+    	t = lookupInClassHierarchy(name);
+    	if (t != null) {
+        	return t;
+    	}
+
+    	// Search in global scope
+    	return lookupGlobal(name);
+	}
+
+	/*public Type find(String name)
 	{
 		SymbolTableEntry e;
 				
@@ -96,7 +182,7 @@ public class SymbolTable
 		}
 		
 		return null;
-	}
+	}*/
 
 	/***************************************************************************/
 	/* begine scope = Enter the <SCOPE-BOUNDARY> element to the data structure */
@@ -283,47 +369,42 @@ public class SymbolTable
 		}
 		return instance;
 	}
-}
 
 
 
+	public String getScope()
+	{
+		SymbolTableEntry curr = top;
 
+		while (curr != null) {
+			if ("SCOPE-BOUNDARY".equals(curr.name)) {
+				return "GLOBAL";
+			}
 
+			if ("BLOCK".equals(curr.name)) {
+				return "BLOCK";
+			}
 
-/*Omer's
-	public String getScope() {
-        SymbolTableEntry cur = top;
+			if ("FUNC".equals(curr.name)) {
+				return "FUNCTION";
+			}
 
-        while (cur != null) {
-            if (cur.name.equals("SCOPE-BOUNDARY"))
-                return "GLOBAL";
-            if (cur.name.equals("BLOCK"))
-                return "BLOCK";
-            if (cur.name.equals("FUNC"))
-                return "FUNCTION";
-            if (cur.name.equals("CLASS"))
-                return "CLASS";
+			if ("CLASS".equals(curr.name)) {
+				return "CLASS";
+			}
 
-            cur = cur.prevtop;
-        }
+			curr = curr.prevtop;
+		}
 
-        return "GLOBAL";
-    }
+		return "GLOBAL";
+	}
+
+	public static boolean isReservedKeyword(String name) {
+		return name.equals("int") || name.equals("string") || name.equals("void");
+	}
 
 	public Type findInCurrentScope(String name) {
-    	SymbolTableEntry cur = top;
-
-    	while (cur != null) {
-        	if (cur.name.equals("SCOPE-BOUNDARY"))
-            	return null;
-        	if (cur.name.equals(name))
-            	return cur.type;
-
-        	cur = cur.prevtop;
-    	}
-
-    	return null;
+		return null; //TODO - lookup???
 	}
-	*/
 
-
+}

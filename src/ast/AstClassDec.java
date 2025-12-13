@@ -97,11 +97,7 @@ public class AstClassDec extends AstDec
                 }
 				else if (dec instanceof AstFuncDec) {
                     AstFuncDec fd = (AstFuncDec) dec;
-                    TypeClassVarDec varDecParentField = superClassType.findElementInClassHierarchy(fd.name);
-					Type ParentField = null;
-					if (varDecParentField != null) {
-						ParentField = varDecParentField.type;
-					}
+                    Type ParentField = superClassType.findElementInClassHierarchy(fd.name);
 
                     if (ParentField != null) {
                         if (!(ParentField instanceof TypeFunction)) throw new RuntimeException("semantic error");

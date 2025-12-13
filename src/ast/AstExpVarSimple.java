@@ -28,6 +28,8 @@ public class AstExpVarSimple extends AstExpVar
 
 	public Type semantMe()
 	{
-		return SymbolTable.getInstance().find(name);
+		Type t = SymbolTable.getInstance().find(name);
+		if (t != null) return t;
+		throw new RuntimeException("semantic error");
 	}
 }

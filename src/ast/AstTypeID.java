@@ -3,7 +3,7 @@ package ast;
 import symboltable.SymbolTable;
 import types.*;
 
-public class AstTypeID extends AstNode
+public class AstTypeID extends AstType
 {
 	public String ID;
 	
@@ -30,7 +30,6 @@ public class AstTypeID extends AstNode
 		Type type = SymbolTable.getInstance().find(ID);
 
 		if (type == null || type == TypeVoid.getInstance()) throw new RuntimeException("semantic error");
-
 		return type;
 	}
 }

@@ -18,7 +18,7 @@ parser code
 	public void report_error(String message, Object info)
 	{
 		this.errorLine = lexer.getLine();
-		throw new RuntimeException("cup error");
+		throw new RuntimeException("syntax error");
 	}
 :}
 
@@ -87,7 +87,8 @@ non terminal AstStmtList stmtList;
 non terminal AstProgram program;
 non terminal AstDecList decList;
 non terminal AstDec dec;
-non terminal AstType type;
+non terminal AstTypePrimitive type;
+non terminal AstTypeID typeID;
 non terminal AstVarDec varDec;
 non terminal AstFuncDec funcDec;
 non terminal AstParamList paramList;
@@ -140,10 +141,10 @@ dec			::=		varDec:vd							{: RESULT = vd;							:}
 					| arrayTypedef:atd					{: RESULT = atd;                        :}
 					;
 
-type		::=		TYPE_INT							{: RESULT = new AstType("Int");           :}
-					| TYPE_STRING						{: RESULT = new AstType("String");        :}
-					| TYPE_VOID							{: RESULT = new AstType("Void");          :}
-					| ID:id								{: RESULT = new AstTypeID(id);          :}
+type		::=		TYPE_INT							{: RESULT = new AstTypePrimitive("Int");           :}
+					| TYPE_STRING						{: RESULT = new AstTypePrimitive("String");        :}
+					| TYPE_VOID							{: RESULT = new AstTypePrimitive("Void");          :}
+					| ID:id								{: RESULT = new AstTypeID(id);          		   :}
 					;
 
 

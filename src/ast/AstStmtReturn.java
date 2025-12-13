@@ -28,6 +28,13 @@ public class AstStmtReturn extends AstStmt
 	}
 
 	public Type semantMe(){
+		/*
+			According to the syntax of L, return statements can only be found inside functions.
+			Since functions can not be nested, it follows that a return statement belongs to exactly one function.
+			• If a function has return type void, its return statements must be empty (return;).
+			• If a function has a non-void return type T, then every return statement must return an expression
+			whose type is compatible with type T.
+		*/
 		Type returnType = SymbolTable.getInstance().find("__RET_TYPE__");
 		if (returnType == null) throw new RuntimeException("semantic error");
 

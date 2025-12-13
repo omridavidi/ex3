@@ -48,7 +48,6 @@ public class AstArrayTypeDec extends AstDec
 			}
 		
 		// rule 2: An array type must be defined over a previously declared (non-void) type.
-
 		if (SymbolTable.getInstance().findInCurrentScope(name) != null)
 			{
 				throw new RuntimeException("semantic error");
