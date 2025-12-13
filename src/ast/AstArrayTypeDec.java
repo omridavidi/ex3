@@ -12,7 +12,7 @@ public class AstArrayTypeDec extends AstDec
 	{
 		serialNumber = AstNodeSerialNumber.getFresh();
 	
-		System.out.format("====================== arrayTypedef -> ARRAY ID = %s[];\n",type);
+		System.out.format("====================== arrayTypedec -> ARRAY ID = %s[];\n",type);
 		// array int_array = int[]
 
 		this.name = name;
