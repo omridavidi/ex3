@@ -57,8 +57,14 @@ public class AstClassDec extends AstDec
 	{	
 		SymbolTable symTable = SymbolTable.getInstance();
 
+		// Check for reserved keywords
+		if (SymbolTable.isReservedKeyword(name)) throw new RuntimeException("semantic error: class '" + name + "' cannot use reserved keyword");
+
+		// Class declarations can only appear in global scope
+		if (!symTable.getScope().equals("GLOBAL")) throw new RuntimeException("semantic error: class '" + name + "' can only be declared in global scope");
+
 		//Assert no existing function/variable with same name
-		if (symTable.findInCurrentScope(name) != null)
+		if (symTable.lookupLocal(name) != null)
 		{
 			throw new RuntimeException("semantic error: class '" + name + "' already declared in current scope");
 		}

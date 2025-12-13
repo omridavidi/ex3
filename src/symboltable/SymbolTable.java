@@ -75,7 +75,7 @@ public class SymbolTable
 		/**************************************************************************/
 		/* [3] Prepare a new symbol table entry with name, type, next and prevtop */
 		/**************************************************************************/
-		SymbolTableEntry e = new SymbolTableEntry(name,t,hashValue,next,top, topIndex++);
+		SymbolTableEntry e = new SymbolTableEntry(name,t, hashValue, next, top, topIndex++);
 
 		/**********************************************/
 		/* [4] Update the top of the symbol table ... */
@@ -102,7 +102,7 @@ public class SymbolTable
     	for (SymbolTableEntry entry = top; entry != null; entry = entry.prevtop)
 	 	{
 			// End of current scope
-			if ("SCOPE-BOUNDARY".equals(entry.name)) {
+			if (entry.name.equals("SCOPE-BOUNDARY")) {
 				break;
 			}
 
@@ -116,7 +116,6 @@ public class SymbolTable
 		return null;
 	}
 
-
 	private Type lookupInClassHierarchy(String name)
 	{
     	if (myClass == null) {
@@ -125,7 +124,7 @@ public class SymbolTable
 
     	for (TypeClass cls = myClass; cls != null; cls = cls.father) {
         	if (cls.dataMembers != null) {
-            	Type found = cls.dataMembers.findElement(name); //TODO - same as omer???
+            	Type found = cls.dataMembers.findElement(name);
             	if (found != null) {
                 	return found;
             	}
@@ -138,6 +137,7 @@ public class SymbolTable
 	
 	private Type lookupGlobal(String name)
 	{
+		// lookup in the global scope only
 		SymbolTableEntry e;
 				
 		for (e = table[hash(name)]; e != null; e = e.next)
@@ -214,7 +214,7 @@ public class SymbolTable
 		/**************************************************************************/
 		/* Pop elements from the symbol table stack until a SCOPE-BOUNDARY is hit */		
 		/**************************************************************************/
-		while (top.name != "SCOPE-BOUNDARY")
+		while (!top.name.equals("SCOPE-BOUNDARY"))
 		{
 			table[top.index] = top.next;
 			topIndex = topIndex -1;
@@ -400,11 +400,10 @@ public class SymbolTable
 	}
 
 	public static boolean isReservedKeyword(String name) {
-		return name.equals("int") || name.equals("string") || name.equals("void");
+		return name.equals("int") || name.equals("string") || name.equals("void") ||
+		       name.equals("if") || name.equals("else") || name.equals("while") || 
+		       name.equals("return") || name.equals("class") || name.equals("array") ||
+		       name.equals("extends") || name.equals("new") || name.equals("nil") ||
+			   name.equals("__RET_TYPE__");
 	}
-
-	public Type findInCurrentScope(String name) {
-		return null; //TODO - lookup???
-	}
-
 }

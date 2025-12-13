@@ -50,17 +50,39 @@ public class AstVarDec extends AstDec
 	}
 
     public Type semantMe(){
-		Type t = type.semantMe();
-		if (t == null || t == TypeVoid.getInstance()) throw new RuntimeException("semantic error: variable '" + name + "' cannot be of type void");
+		// Check for reserved keywords
+		if (SymbolTable.isReservedKeyword(name)) throw new RuntimeException("semantic error: variable '" + name + "' cannot use reserved keyword");
 		
-		if (SymbolTable.getInstance().findInCurrentScope(name) != null) throw new RuntimeException("semantic error: variable '" + name + "' already declared in current scope");
+		Type t = type.semantMe();
+		if (t == null || t == TypeVoid.getInstance())
+            throw new RuntimeException("semantic error: variable '" + name + "' cannot be of type void");
+		
+		if (SymbolTable.getInstance().lookupLocal(name) != null)
+            throw new RuntimeException("semantic error: variable '" + name + "' already declared in current scope");
 
 		if (exp != null){
 			Type expType = exp.semantMe();
 			if (expType == TypeNil.getInstance()){
-				if(!(t instanceof TypeClass) && !(t instanceof TypeArray)) throw new RuntimeException("semantic error: cannot assign nil to non-class/array type");
+				if(!(t instanceof TypeClass) && !(t instanceof TypeArray))
+                    throw new RuntimeException("semantic error: cannot assign nil to non-class/array type");
 			}
-			if (!t.isCompatibleWith(expType)) throw new RuntimeException("semantic error: variable initialization type mismatch for '" + name + "'");
+			
+			// Special case for arrays: if exp is "new T[e]", check if var is an array defined over T
+			// This handles: array IntArray = int[]; IntArray arr := new int[5];
+			if (t instanceof TypeArray && expType instanceof TypeArray && exp instanceof AstNewExpArr)
+    {
+				TypeArray arrayType = (TypeArray) t;
+				TypeArray newArrayType = (TypeArray) expType;
+				// Check if the var's array is defined over the same element type as the new expression
+				if (arrayType.arrayDataType != newArrayType.arrayDataType) {
+					throw new RuntimeException("semantic error: variable initialization type mismatch for '" + name + "'");
+				}
+				// Special case satisfied, skip the general isCompatibleWith check
+			} else {
+				// General case
+				if (!t.isCompatibleWith(expType))
+                    throw new RuntimeException("semantic error: variable initialization type mismatch for '" + name + "'");
+			}
 		}		
 		SymbolTable.getInstance().enter(name, t);
 		return t;		

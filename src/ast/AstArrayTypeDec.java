@@ -36,6 +36,12 @@ public class AstArrayTypeDec extends AstDec
 
 	public TypeArray semantMe(){
 
+		// Check for reserved keywords
+		if (SymbolTable.isReservedKeyword(name)) throw new RuntimeException("semantic error: array type '" + name + "' cannot use reserved keyword");
+
+		// Array type declarations can only appear in global scope
+		if (!SymbolTable.getInstance().getScope().equals("GLOBAL")) throw new RuntimeException("semantic error: array type '" + name + "' can only be declared in global scope");
+
 		// rule 1: type must not be void
 		// rule 2: An array type must be defined over a previously declared (non-void) type.
 
@@ -48,7 +54,7 @@ public class AstArrayTypeDec extends AstDec
 			}
 		
 		// rule 2: An array type must be defined over a previously declared (non-void) type.
-		if (SymbolTable.getInstance().findInCurrentScope(name) != null)
+		if (SymbolTable.getInstance().lookupLocal(name) != null)
 			{
 				throw new RuntimeException("semantic error: array type '" + name + "' already declared in current scope");
 			}

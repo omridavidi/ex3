@@ -3,7 +3,7 @@ package ast;
 import symboltable.SymbolTable;
 import types.*;
 
-public class AstTypePrimitive extends AstNode
+public class AstTypePrimitive extends AstType
 {
 	public String type;
 	

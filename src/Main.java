@@ -1,5 +1,5 @@
 import java.io.*;
-import java_cup.runtime.Symbol;
+import java_cup.runtime.*;
 import ast.*;
 
 public class Main {
@@ -19,7 +19,10 @@ public class Main {
             l = new Lexer(fileReader);
             p = new Parser(l);
 
-            p.parse();
+            AstProgram program = (AstProgram) p.parse().value;
+            
+            // Perform semantic analysis
+            program.semantMe();
 
             fileWriter.print("OK");
             fileWriter.close();

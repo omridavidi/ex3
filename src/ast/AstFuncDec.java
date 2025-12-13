@@ -62,6 +62,9 @@ public class AstFuncDec extends AstDec
 
 	public Type semantMe()
 	{
+		// Check for reserved keywords
+		if (SymbolTable.isReservedKeyword(name)) throw new RuntimeException("semantic error: function '" + name + "' cannot use reserved keyword");
+		
 		Type returnType = null;
 		TypeList type_list = null;
 
@@ -69,7 +72,7 @@ public class AstFuncDec extends AstDec
 		if (returnType == null) throw new RuntimeException("semantic error: function return type is invalid");
 
 		// defining multiple methods with the same name but different signatures in the same class) is illegal.
-		if (SymbolTable.getInstance().findInCurrentScope(name) != null) throw new RuntimeException("semantic error: function '" + name + "' already declared in current scope");
+		if (SymbolTable.getInstance().lookupLocal(name) != null) throw new RuntimeException("semantic error: function '" + name + "' already declared in current scope");
 		
 		// Check for duplicate parameter names
 		HashSet<String> paramNames = new HashSet<>();
@@ -81,19 +84,32 @@ public class AstFuncDec extends AstDec
 			}
 		}
 
-		SymbolTable.getInstance().beginScope();
-
+		// Build parameter type list first
 		if (paramList != null)
 		{
-			type_list = (TypeList) paramList.semantMe();
+			type_list = paramList.buildTypeList();
 		}
 
+		// register function before processing body (allows recursion)
+		TypeFunction funcType = new TypeFunction(returnType, name, type_list);
+		SymbolTable.getInstance().enter(name, funcType);
+
+		// begin scope for function body
+		SymbolTable.getInstance().beginScope();
+
+		// add return type for return statement validation
+		SymbolTable.getInstance().enter("__RET_TYPE__", returnType);
+
+		// add parameters to function scope
+		if (paramList != null)
+		{
+			paramList.semantMe();
+		}
+
+		// Process function body
 		stmtList.semantMe();
 
 		SymbolTable.getInstance().endScope();
-
-		TypeFunction funcType = new TypeFunction(returnType, name, type_list);
-		SymbolTable.getInstance().enter(name, funcType);
 
 		return funcType;
 	}

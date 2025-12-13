@@ -24,14 +24,12 @@ public class TypeArray extends Type
 
 	@Override
 	public boolean isCompatibleWith(Type other) {
-		// other == TypeNil.getInstance() handles the nil case (typeNil is singleton)
+		// Arrays can accept nil
 		if (other == TypeNil.getInstance()) {
 			return true;
 		}
 
-		return false;
-		
+		// Arrays are only compatible if they are the exact same type object
+		return this == other;
 	}
-
-	
 }
