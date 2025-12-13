@@ -71,7 +71,7 @@ public class AstCallExp extends AstExp
 			// rule 1: Only previously defined functions or methods can be called.
 			// check if FUNCTION with name exists in symbol table
 			Type varFunc = SymbolTable.getInstance().find(name);
-			if (!(varFunc instanceof TypeFunction)) throw new RuntimeException("semantic error");
+			if (!(varFunc instanceof TypeFunction)) throw new RuntimeException("semantic error: '" + name + "' is not a function");
 			function = (TypeFunction) varFunc;
 			expectedParameters = function.params;
 		}
@@ -84,7 +84,7 @@ public class AstCallExp extends AstExp
 
 			// if object is not of class type throw error
 			Type object = var.semantMe();
-			if (!(object instanceof TypeClass)) throw new RuntimeException("semantic error");
+			if (!(object instanceof TypeClass)) throw new RuntimeException("semantic error: cannot call method on non-class type");
 			TypeClass objectClass = (TypeClass) object;
 
 			// find function in class data members with a certain name
@@ -119,14 +119,14 @@ public class AstCallExp extends AstExp
 		{
 			if (!expectedParameters.head.isCompatibleWith(providedParameters.head))
 				{
-					throw new RuntimeException("semantic error");
+					throw new RuntimeException("semantic error: parameter type mismatch in call to '" + name + "'");
 				}
 			expectedParameters = expectedParameters.tail;
 			providedParameters = providedParameters.tail;
 		}
 
 
-		if (expectedParameters != null || providedParameters != null) throw new RuntimeException("semantic error");
+		if (expectedParameters != null || providedParameters != null) throw new RuntimeException("semantic error: parameter count mismatch in call to '" + name + "'");
 
 		return function.returnType;
 

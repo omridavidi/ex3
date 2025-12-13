@@ -31,7 +31,7 @@ public class AstNewExpSimple extends AstNewExp
 
     public Type semantMe(){
         Type t = type.semantMe();
-        if (!(t instanceof TypeClass)) throw new RuntimeException("semantic error");
+        if (!(t instanceof TypeClass)) throw new RuntimeException("semantic error: cannot instantiate non-class type");
 
         return t;
     }

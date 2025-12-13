@@ -39,7 +39,7 @@ public class AstParamList extends AstNode
 	
 	public TypeList semantMe(){
 		Type paramType = param.semantMe();
-		if (paramType == TypeVoid.getInstance()) throw new RuntimeException("semantic error");
+		if (paramType == TypeVoid.getInstance()) throw new RuntimeException("semantic error: parameter cannot be of type void");
 
 		TypeList paramListType = null;
 		if (paramList != null) paramListType = paramList.semantMe();

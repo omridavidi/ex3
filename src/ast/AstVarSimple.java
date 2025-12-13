@@ -27,7 +27,7 @@ public class AstVarSimple extends AstVar
 	public Type semantMe()
 	{
 		Type t = SymbolTable.getInstance().find(name);
-		if (t == null) throw new RuntimeException("semantic error");
+		if (t == null) throw new RuntimeException("semantic error: variable '" + name + "' not declared");
 		return t;
 	}
 }

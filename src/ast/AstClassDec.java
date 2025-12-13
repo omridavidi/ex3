@@ -60,7 +60,7 @@ public class AstClassDec extends AstDec
 		//Assert no existing function/variable with same name
 		if (symTable.findInCurrentScope(name) != null)
 		{
-			throw new RuntimeException("semantic error");
+			throw new RuntimeException("semantic error: class '" + name + "' already declared in current scope");
 		}
 
 		//Assert super class is really a class
@@ -68,45 +68,48 @@ public class AstClassDec extends AstDec
 		if (superName != null)
 		{
 			Type superType = symTable.find(superName);
-			if (!(superType instanceof TypeClass)) throw new RuntimeException("semantic error");
+			if (!(superType instanceof TypeClass)) throw new RuntimeException("semantic error: superclass '" + superName + "' is not a class type");
 			superClassType = (TypeClass)superType;
 		}
 
 		//Assert no overloading + shadowing
 		if (cFieldList != null){
 			HashSet<String> fieldNames = new HashSet<String>();
-			for (AstcFieldList it = cFieldList; it != null; it = it.cFieldList){
+			for (AstcFieldList cFieldNode = cFieldList; cFieldNode != null; cFieldNode = cFieldNode.cFieldList){
 				String fieldName = null;
-				if (it.cField.dec instanceof AstVarDec) fieldName = ((AstVarDec)it.cField.dec).name;
-				else if (it.cField.dec instanceof AstFuncDec) fieldName = ((AstFuncDec)it.cField.dec).name;
-				else if (it.cField.dec instanceof AstClassDec) fieldName = ((AstClassDec)it.cField.dec).name;
-				else if (it.cField.dec instanceof AstArrayTypeDec) fieldName = ((AstArrayTypeDec)it.cField.dec).name;
-				if (fieldName == null || fieldNames.contains(fieldName)) throw new RuntimeException("semantic error");
+				if (cFieldNode.cField.dec instanceof AstVarDec) fieldName = ((AstVarDec)cFieldNode.cField.dec).name;
+				else if (cFieldNode.cField.dec instanceof AstFuncDec) fieldName = ((AstFuncDec)cFieldNode.cField.dec).name;
+				else if (cFieldNode.cField.dec instanceof AstClassDec) fieldName = ((AstClassDec)cFieldNode.cField.dec).name;
+				else if (cFieldNode.cField.dec instanceof AstArrayTypeDec) fieldName = ((AstArrayTypeDec)cFieldNode.cField.dec).name;
+		
+				// now fieldName is set to the name of the field
+				// check for duplicates within the current class
+				if (fieldName == null || fieldNames.contains(fieldName)) throw new RuntimeException("semantic error: duplicate field name '" + fieldName + "' in class '" + name + "'");
 				fieldNames.add(fieldName);
 			}
 		}
 
 		//Assert no shadowing on parent classes
 		if (superClassType != null) {
-            for (AstcFieldList it = cFieldList; it != null; it = it.cFieldList) {
-                AstDec dec = it.cField.dec;
+            for (AstcFieldList cFieldNode = cFieldList; cFieldNode != null; cFieldNode = cFieldNode.cFieldList) {
+                AstDec dec = cFieldNode.cField.dec;
 
                 if (dec instanceof AstVarDec) {
                     AstVarDec vd = (AstVarDec) dec;
-                    if (superClassType.findElementInClassHierarchy(vd.name) != null) throw new RuntimeException("semantic error");
+                    if (superClassType.findElementInClassHierarchy(vd.name) != null) throw new RuntimeException("semantic error: variable '" + vd.name + "' shadows inherited member in class '" + name + "'");
                 }
 				else if (dec instanceof AstFuncDec) {
                     AstFuncDec fd = (AstFuncDec) dec;
                     Type ParentField = superClassType.findElementInClassHierarchy(fd.name);
 
                     if (ParentField != null) {
-                        if (!(ParentField instanceof TypeFunction)) throw new RuntimeException("semantic error");
+                        if (!(ParentField instanceof TypeFunction)) throw new RuntimeException("semantic error: method '" + fd.name + "' shadows non-function member in superclass");
 
                         TypeFunction parentFunc = (TypeFunction) ParentField;
                         Type retType = fd.type.semantMe();
                         TypeList params = (fd.paramList != null ? fd.paramList.buildTypeList() : null);
 
-                        if (!signaturesMatch(parentFunc, retType, params)) throw new RuntimeException("semantic error");
+                        if (!signaturesMatch(parentFunc, retType, params)) throw new RuntimeException("semantic error: method '" + fd.name + "' signature does not match overridden method in superclass");
                     }
                 }
             }

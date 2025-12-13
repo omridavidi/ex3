@@ -31,10 +31,10 @@ public class AstStmtCall extends AstStmt
 	}
 
 	public Type semantMe(){
-		if (call == null) throw new RuntimeException("semantic error");
+		if (call == null) throw new RuntimeException("semantic error: call statement has no call expression");
 
         Type t = call.semantMe();
-        if (t == null) throw new RuntimeException("semantic error");
+        if (t == null) throw new RuntimeException("semantic error: call expression has no return type");
 
 		return null;
 	}

@@ -2,6 +2,7 @@ package ast;
 
 import symboltable.SymbolTable;
 import types.*;
+import java.util.HashSet;
 
 public class AstFuncDec extends AstDec
 {
@@ -61,33 +62,39 @@ public class AstFuncDec extends AstDec
 
 	public Type semantMe()
 	{
-		Type paramName;
 		Type returnType = null;
 		TypeList type_list = null;
 
 		returnType = type.semantMe();
-		if (returnType == null) throw new RuntimeException("semantic error");
-	
+		if (returnType == null) throw new RuntimeException("semantic error: function return type is invalid");
+
+		// defining multiple methods with the same name but different signatures in the same class) is illegal.
+		if (SymbolTable.getInstance().findInCurrentScope(name) != null) throw new RuntimeException("semantic error: function '" + name + "' already declared in current scope");
+		
+		// Check for duplicate parameter names
+		HashSet<String> paramNames = new HashSet<>();
+		for (AstParamList paramNode = paramList; paramNode != null; paramNode = paramNode.paramList)
+		{
+			if (!paramNames.add(paramNode.param.name))
+			{
+				throw new RuntimeException("semantic error: duplicate parameter name '" + paramNode.param.name + "' in function '" + name + "'");
+			}
+		}
+
 		SymbolTable.getInstance().beginScope();
 
-		for (AstParamList it = paramList; it  != null; it = it.paramList)
+		if (paramList != null)
 		{
-			paramName = SymbolTable.getInstance().find(it.param.name);
-			if (paramName == null) throw new RuntimeException("semantic error");
-			else
-			{
-				type_list = new TypeList(paramName,type_list);
-				SymbolTable.getInstance().enter(it.param.name,paramName);
-				weird 												^
-			}
+			type_list = (TypeList) paramList.semantMe();
 		}
 
 		stmtList.semantMe();
 
 		SymbolTable.getInstance().endScope();
 
-		SymbolTable.getInstance().enter(name,new TypeFunction(returnType,name,type_list));
+		TypeFunction funcType = new TypeFunction(returnType, name, type_list);
+		SymbolTable.getInstance().enter(name, funcType);
 
-		return null;		
+		return funcType;
 	}
 }

@@ -30,6 +30,6 @@ public class AstExpVarSimple extends AstExpVar
 	{
 		Type t = SymbolTable.getInstance().find(name);
 		if (t != null) return t;
-		throw new RuntimeException("semantic error");
+		throw new RuntimeException("semantic error: variable '" + name + "' not declared");
 	}
 }

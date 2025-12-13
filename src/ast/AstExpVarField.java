@@ -40,14 +40,14 @@ public class AstExpVarField extends AstExpVar
 		
 		if (var != null) t = var.semantMe();
 	
-		if (!(t instanceof TypeClass)) throw new RuntimeException("semantic error");
+		if (!(t instanceof TypeClass)) throw new RuntimeException("semantic error: cannot access field of non-class type");
 		tc = (TypeClass) t;
 		
-		for (TypeClassVarDecList it = tc.dataMembers; it != null; it=it.tail)
+		for (TypeClassVarDecList node = tc.dataMembers; node != null; node=node.tail)
 		{
-			if (it.head.name == fieldName) return it.head.type;
+			if (node.head.name == fieldName) return node.head.type;
 		}
 		
-		throw new RuntimeException("semantic error");
+		throw new RuntimeException("semantic error: field '" + fieldName + "' not found in class");
 	}
 }

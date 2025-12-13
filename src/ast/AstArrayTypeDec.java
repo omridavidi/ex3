@@ -44,13 +44,13 @@ public class AstArrayTypeDec extends AstDec
 		// rule 1: type must not be void
 		if (elementType == TypeVoid.getInstance())
 			{
-				throw new RuntimeException("semantic error");
+				throw new RuntimeException("semantic error: array type '" + name + "' cannot be defined over void type");
 			}
 		
 		// rule 2: An array type must be defined over a previously declared (non-void) type.
 		if (SymbolTable.getInstance().findInCurrentScope(name) != null)
 			{
-				throw new RuntimeException("semantic error");
+				throw new RuntimeException("semantic error: array type '" + name + "' already declared in current scope");
 			}
 
 		TypeArray array = new TypeArray(name, elementType);

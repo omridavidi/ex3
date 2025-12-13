@@ -99,43 +99,43 @@ public class AstExpBinop extends AstExp
 
                 if (t1 == TypeString.getInstance() && t2 == TypeString.getInstance())
 					return TypeString.getInstance();
-                throw new RuntimeException("semantic error");
+                throw new RuntimeException("semantic error: '+' operator requires both operands to be int or both to be string");
 
             case OP_MINUS:
 				// only integers
 				if (t1 == TypeInt.getInstance() && t2 == TypeInt.getInstance())
 					return TypeInt.getInstance();
-				throw new RuntimeException("semantic error");
+				throw new RuntimeException("semantic error: '-' operator requires both operands to be int");
             
 			case OP_TIMES:
 				// only integers
 				if (t1 == TypeInt.getInstance() && t2 == TypeInt.getInstance())
 					return TypeInt.getInstance();
-				throw new RuntimeException("semantic error");
+				throw new RuntimeException("semantic error: '*' operator requires both operands to be int");
             
 			case OP_DIVIDE:
 				// only integers
                 if (t1 != TypeInt.getInstance() || t2 != TypeInt.getInstance())
-                    throw new RuntimeException("semantic error");
+                    throw new RuntimeException("semantic error: '/' operator requires both operands to be int");
                 
 				// rule 1:  When performing division (using the / operator), if the divisor is a constant, it must not be 0
 
                 if (right instanceof AstExpInt) {
                     AstExpInt rightInt = (AstExpInt) right;
                     if (rightInt.value == 0)
-                        throw new RuntimeException("semantic error");
+                        throw new RuntimeException("semantic error: division by zero");
                 }
                 return TypeInt.getInstance();
             
 			case OP_LT:
 				// only integers
 				if (t1 == TypeInt.getInstance() && t2 == TypeInt.getInstance()) return TypeInt.getInstance();
-				throw new RuntimeException("semantic error");
+				throw new RuntimeException("semantic error: '<' operator requires both operands to be int");
 			
 			case OP_GT:
 				// only integers
 				if (t1 == TypeInt.getInstance() && t2 == TypeInt.getInstance()) return TypeInt.getInstance();
-				throw new RuntimeException("semantic error");
+				throw new RuntimeException("semantic error: '>' operator requires both operands to be int");
 
 			case OP_EQ:
 				// rule 2
@@ -151,10 +151,10 @@ public class AstExpBinop extends AstExp
                     ((t2 instanceof TypeArray || t2 instanceof TypeClass) && t1 == TypeNil.getInstance()))
                     return TypeInt.getInstance();
 
-                throw new RuntimeException("semantic error");
+                throw new RuntimeException("semantic error: '=' operator requires compatible operand types");
 
 			default:
-                throw new RuntimeException("semantic error");
+                throw new RuntimeException("semantic error: unknown binary operator");
 		}
 	}
 }

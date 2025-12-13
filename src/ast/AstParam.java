@@ -32,7 +32,7 @@ public class AstParam extends AstNode
 
 	public Type semantMe(){
 		Type t = type.semantMe();
-		if (t == TypeVoid.getInstance()) throw new RuntimeException("semantic error");
+		if (t == TypeVoid.getInstance()) throw new RuntimeException("semantic error: parameter '" + name + "' cannot be of type void");
 
 		SymbolTable.getInstance().enter(name, t);
 		return t;

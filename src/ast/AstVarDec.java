@@ -51,16 +51,16 @@ public class AstVarDec extends AstDec
 
     public Type semantMe(){
 		Type t = type.semantMe();
-		if (t == null || t == TypeVoid.getInstance()) throw new RuntimeException("semantic error");
+		if (t == null || t == TypeVoid.getInstance()) throw new RuntimeException("semantic error: variable '" + name + "' cannot be of type void");
 		
-		if (SymbolTable.getInstance().findInCurrentScope(name) != null) throw new RuntimeException("semantic error");
+		if (SymbolTable.getInstance().findInCurrentScope(name) != null) throw new RuntimeException("semantic error: variable '" + name + "' already declared in current scope");
 
 		if (exp != null){
 			Type expType = exp.semantMe();
 			if (expType == TypeNil.getInstance()){
-				if(!(t instanceof TypeClass) && !(t instanceof TypeArray)) throw new RuntimeException("semantic error");
+				if(!(t instanceof TypeClass) && !(t instanceof TypeArray)) throw new RuntimeException("semantic error: cannot assign nil to non-class/array type");
 			}
-			if (!t.isCompatibleWith(expType)) throw new RuntimeException("semantic error");
+			if (!t.isCompatibleWith(expType)) throw new RuntimeException("semantic error: variable initialization type mismatch for '" + name + "'");
 		}		
 		SymbolTable.getInstance().enter(name, t);
 		return t;		
