@@ -96,7 +96,7 @@ non terminal AstParam param;
 non terminal AstClassDec classDec;
 non terminal AstcFieldList cFieldList;
 non terminal AstcField cField;
-non terminal AstArrayTypeDec arrayTypedec;
+non terminal AstArrayTypeDec arrayTypedef;
 non terminal AstNewExp newExp;
 non terminal AstCallExp callExp;
 non terminal AstExpList expList;
