@@ -1,5 +1,6 @@
 package ast;
 
+import Exception.SemanticException;
 import symboltable.SymbolTable;
 import types.*;
 
@@ -39,7 +40,7 @@ public class AstStmtWhile extends AstStmt
 
 	public Type semantMe(){
 		Type condType = condition.semantMe();
-		if (condType != TypeInt.getInstance()) throw new RuntimeException("semantic error: while condition must be of type int");
+		if (condType != TypeInt.getInstance()) throw new SemanticException(this.getLineNumber(), "while condition must be of type int");
 
 		SymbolTable.getInstance().beginScope();
         if (body != null) body.semantMe();

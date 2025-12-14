@@ -1,5 +1,6 @@
 package ast;
 
+import Exception.SemanticException;
 import symboltable.SymbolTable;
 import types.*;
 
@@ -47,21 +48,21 @@ public class AstNewExpArr extends AstNewExp
         // rule 1: T is a previously declared type (the element type).
         Type elementType = type.semantMe();
         if (elementType == null)
-            throw new RuntimeException("semantic error: array element type not declared");
+            throw new SemanticException(this.getLineNumber(), "array element type not declared");
 
         // rule 1: NON VOID type.
         if (elementType == TypeVoid.getInstance())
-            throw new RuntimeException("semantic error: array cannot be allocated over void type");
+            throw new SemanticException(this.getLineNumber(), "array cannot be allocated over void type");
         
         // rule 2: The size expression e must be of type int.
         Type sizeType = size.semantMe();
         if (sizeType != TypeInt.getInstance())
-            throw new RuntimeException("semantic error: array size must be of type int");
+            throw new SemanticException(this.getLineNumber(), "array size must be of type int");
 
         // rule 3: If e is a constant expression, it must be greater than 0.
         if (size instanceof AstExpInt) {
             AstExpInt sizeInt = (AstExpInt) size;
-            if (sizeInt.value <= 0) throw new RuntimeException("semantic error: array size must be greater than 0");
+            if (sizeInt.value <= 0) throw new SemanticException(this.getLineNumber(), "array size must be greater than 0");
         }
         
         // Return a TypeArray with the element type

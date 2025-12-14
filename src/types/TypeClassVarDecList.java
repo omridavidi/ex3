@@ -1,5 +1,6 @@
 package types;
 import ast.*;
+import Exception.SemanticException;
 
 public class TypeClassVarDecList
 {
@@ -69,7 +70,7 @@ public class TypeClassVarDecList
 		
 		else
 		{
-			throw new RuntimeException("Unknown declaration type in class field list");
+			throw new SemanticException(dec.getLineNumber(), "Unknown declaration type in class field list");
 		}
 
 		

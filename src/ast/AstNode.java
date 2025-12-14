@@ -1,5 +1,6 @@
 package ast;
 
+import Exception.SemanticException;
 import symboltable.SymbolTable;
 import types.*;
 
@@ -14,11 +15,15 @@ public abstract class AstNode
 	public int lineNumber;
 
 
+
 	public AstNode(int lineNumber)
 	{
         this.lineNumber = lineNumber;
     }
 
+	public int getLineNumber() {
+		return lineNumber;
+	}
 	/***********************************************/
 	/* The default message for an unknown AST node */
 	/***********************************************/

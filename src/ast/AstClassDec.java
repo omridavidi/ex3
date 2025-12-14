@@ -1,5 +1,6 @@
 package ast;
 
+import Exception.SemanticException;
 import symboltable.SymbolTable;
 import types.*;
 import java.util.HashSet;
@@ -59,15 +60,15 @@ public class AstClassDec extends AstDec
 		SymbolTable symTable = SymbolTable.getInstance();
 
 		// Check for reserved keywords
-		if (SymbolTable.isReservedKeyword(name)) throw new RuntimeException("semantic error: class '" + name + "' cannot use reserved keyword");
+		if (SymbolTable.isReservedKeyword(name)) throw new SemanticException(this.getLineNumber(), "class '" + name + "' cannot use reserved keyword");
 
 		// Class declarations can only appear in global scope
-		if (!symTable.getScope().equals("GLOBAL")) throw new RuntimeException("semantic error: class '" + name + "' can only be declared in global scope");
+		if (!symTable.getScope().equals("GLOBAL")) throw new SemanticException(this.getLineNumber(), "class '" + name + "' can only be declared in global scope");
 
 		//Assert no existing function/variable with same name
 		if (symTable.lookupLocal(name) != null)
 		{
-			throw new RuntimeException("semantic error: class '" + name + "' already declared in current scope");
+			throw new SemanticException(this.getLineNumber(), "class '" + name + "' already declared in current scope");
 		}
 
 		//Assert super class is really a class
@@ -75,7 +76,7 @@ public class AstClassDec extends AstDec
 		if (superName != null)
 		{
 			Type superType = symTable.find(superName);
-			if (!(superType instanceof TypeClass)) throw new RuntimeException("semantic error: superclass '" + superName + "' is not a class type");
+			if (!(superType instanceof TypeClass)) throw new SemanticException(this.getLineNumber(), "superclass '" + superName + "' is not a class type");
 			superClassType = (TypeClass)superType;
 		}
 
@@ -91,7 +92,7 @@ public class AstClassDec extends AstDec
 		
 				// now fieldName is set to the name of the field
 				// check for duplicates within the current class
-				if (fieldName == null || fieldNames.contains(fieldName)) throw new RuntimeException("semantic error: duplicate field name '" + fieldName + "' in class '" + name + "'");
+				if (fieldName == null || fieldNames.contains(fieldName)) throw new SemanticException(this.getLineNumber(), "duplicate field name '" + fieldName + "' in class '" + name + "'");
 				fieldNames.add(fieldName);
 			}
 		}
@@ -103,20 +104,20 @@ public class AstClassDec extends AstDec
 
                 if (dec instanceof AstVarDec) {
                     AstVarDec vd = (AstVarDec) dec;
-                    if (superClassType.findElementInClassHierarchy(vd.name) != null) throw new RuntimeException("semantic error: variable '" + vd.name + "' shadows inherited member in class '" + name + "'");
+                    if (superClassType.findElementInClassHierarchy(vd.name) != null) throw new SemanticException(this.getLineNumber(), "variable '" + vd.name + "' shadows inherited member in class '" + name + "'");
                 }
 				else if (dec instanceof AstFuncDec) {
                     AstFuncDec fd = (AstFuncDec) dec;
                     Type ParentField = superClassType.findElementInClassHierarchy(fd.name);
 
                     if (ParentField != null) {
-                        if (!(ParentField instanceof TypeFunction)) throw new RuntimeException("semantic error: method '" + fd.name + "' shadows non-function member in superclass");
+                        if (!(ParentField instanceof TypeFunction)) throw new SemanticException(this.getLineNumber(), "method '" + fd.name + "' shadows non-function member in superclass");
 
                         TypeFunction parentFunc = (TypeFunction) ParentField;
                         Type retType = fd.type.semantMe();
                         TypeList params = (fd.paramList != null ? fd.paramList.buildTypeList() : null);
 
-                        if (!signaturesMatch(parentFunc, retType, params)) throw new RuntimeException("semantic error: method '" + fd.name + "' signature does not match overridden method in superclass");
+                        if (!signaturesMatch(parentFunc, retType, params)) throw new SemanticException(this.getLineNumber(), "method '" + fd.name + "' signature does not match overridden method in superclass");
                     }
                 }
             }

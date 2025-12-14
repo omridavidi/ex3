@@ -1,5 +1,6 @@
 package ast;
 
+import Exception.SemanticException;
 import java.io.PrintWriter;
 
 public class AstGraphviz

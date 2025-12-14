@@ -1,5 +1,6 @@
 package ast;
 
+import Exception.SemanticException;
 import symboltable.SymbolTable;
 import types.*;
 

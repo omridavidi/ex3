@@ -1,5 +1,6 @@
 package ast;
 
+import Exception.SemanticException;
 import types.*;
 import symboltable.*;
 
@@ -56,7 +57,7 @@ public class AstStmtIf extends AstStmt
 
 	public Type semantMe()
 	{
-		if (cond.semantMe() != TypeInt.getInstance()) throw new RuntimeException("semantic error: if condition must be of type int");
+		if (cond.semantMe() != TypeInt.getInstance()) throw new SemanticException(this.getLineNumber(), "if condition must be of type int");
 		
 		SymbolTable.getInstance().beginScope();
 		if (body != null) body.semantMe();

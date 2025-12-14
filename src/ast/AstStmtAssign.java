@@ -1,5 +1,6 @@
 package ast;
 
+import Exception.SemanticException;
 import symboltable.SymbolTable;
 import types.*;
 
@@ -63,7 +64,7 @@ public class AstStmtAssign extends AstStmt
 		}
 		
         if (!t1.isCompatibleWith(t2))
-			throw new RuntimeException("semantic error: assignment type mismatch");
+			throw new SemanticException(this.getLineNumber(), "assignment type mismatch");
 		return null;
 	}
 }

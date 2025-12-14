@@ -1,5 +1,6 @@
 package ast;
 
+import Exception.SemanticException;
 import symboltable.SymbolTable;
 import types.*;
 
@@ -28,7 +29,7 @@ public class AstVarSimple extends AstVar
 	public Type semantMe()
 	{
 		Type t = SymbolTable.getInstance().find(name);
-		if (t == null) throw new RuntimeException("semantic error: variable '" + name + "' not declared");
+		if (t == null) throw new SemanticException(this.getLineNumber(), "variable '" + name + "' not declared");
 		return t;
 	}
 }

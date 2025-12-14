@@ -1,5 +1,6 @@
 package ast;
 
+import Exception.SemanticException;
 import symboltable.SymbolTable;
 import types.*;
 
@@ -33,10 +34,10 @@ public class AstParam extends AstNode
 
 	public Type semantMe(){
 		// Check for reserved keywords
-		if (SymbolTable.isReservedKeyword(name)) throw new RuntimeException("semantic error: parameter '" + name + "' cannot use reserved keyword");
+		if (SymbolTable.isReservedKeyword(name)) throw new SemanticException(this.getLineNumber(), "parameter '" + name + "' cannot use reserved keyword");
 		
 		Type t = type.semantMe();
-		if (t == TypeVoid.getInstance()) throw new RuntimeException("semantic error: parameter '" + name + "' cannot be of type void");
+		if (t == TypeVoid.getInstance()) throw new SemanticException(this.getLineNumber(), "parameter '" + name + "' cannot be of type void");
 
 		SymbolTable.getInstance().enter(name, t);
 		return t;

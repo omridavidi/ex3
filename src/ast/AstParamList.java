@@ -1,5 +1,6 @@
 package ast;
 
+import Exception.SemanticException;
 import symboltable.SymbolTable;
 import types.*;
 
@@ -40,7 +41,7 @@ public class AstParamList extends AstNode
 	
 	public TypeList semantMe(){
 		Type paramType = param.semantMe();
-		if (paramType == TypeVoid.getInstance()) throw new RuntimeException("semantic error: parameter cannot be of type void");
+		if (paramType == TypeVoid.getInstance()) throw new SemanticException(this.getLineNumber(), "parameter cannot be of type void");
 
 		TypeList paramListType = null;
 		if (paramList != null) paramListType = paramList.semantMe();

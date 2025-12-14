@@ -1,5 +1,6 @@
 package ast;
 
+import Exception.SemanticException;
 import symboltable.SymbolTable;
 import types.*;
 
@@ -32,10 +33,10 @@ public class AstStmtCall extends AstStmt
 	}
 
 	public Type semantMe(){
-		if (call == null) throw new RuntimeException("semantic error: call statement has no call expression");
+		if (call == null) throw new SemanticException(this.getLineNumber(), "call statement has no call expression");
 
         Type t = call.semantMe();
-        if (t == null) throw new RuntimeException("semantic error: call expression has no return type");
+        if (t == null) throw new SemanticException(this.getLineNumber(), "call expression has no return type");
 
 		return null;
 	}

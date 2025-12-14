@@ -1,5 +1,6 @@
 package ast;
 
+import Exception.SemanticException;
 import symboltable.SymbolTable;
 import types.*;
 
@@ -36,7 +37,7 @@ public class AstVarField extends AstVar
 	public Type semantMe()
 	{
 		Type varType = var.semantMe();
-		if (!(varType instanceof TypeClass)) throw new RuntimeException("semantic error: cannot access field of non-class type");
+		if (!(varType instanceof TypeClass)) throw new SemanticException(this.getLineNumber(), "cannot access field of non-class type");
 
 		TypeClass varClass = (TypeClass)varType;
         while (varClass != null) {
@@ -48,6 +49,6 @@ public class AstVarField extends AstVar
             varClass = varClass.father;
         }
 
-		throw new RuntimeException("semantic error: field '" + fieldName + "' not found in class");
+		throw new SemanticException(this.getLineNumber(), "field '" + fieldName + "' not found in class");
 	}
 }

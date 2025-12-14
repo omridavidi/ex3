@@ -1,5 +1,6 @@
 package ast;
 
+import Exception.SemanticException;
 import symboltable.SymbolTable;
 import types.*;
 
@@ -30,7 +31,7 @@ public class AstTypeID extends AstType
 	public Type semantMe(){
 		Type type = SymbolTable.getInstance().find(ID);
 
-		if (type == null || type == TypeVoid.getInstance()) throw new RuntimeException("semantic error: type '" + ID + "' not declared or is void");
+		if (type == null || type == TypeVoid.getInstance()) throw new SemanticException(this.getLineNumber(), "type '" + ID + "' not declared or is void");
 		return type;
 	}
 }
