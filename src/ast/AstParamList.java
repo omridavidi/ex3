@@ -8,8 +8,9 @@ public class AstParamList extends AstNode
 	public AstParam param;
 	public AstParamList paramList;
 
-	public AstParamList(AstParam param, AstParamList paramList)
+	public AstParamList(AstParam param, AstParamList paramList, int lineNumber)
 	{
+		super(lineNumber);
 		serialNumber = AstNodeSerialNumber.getFresh();
 
 		if (paramList != null) System.out.print("====================== params -> param params\n");

@@ -7,8 +7,9 @@ public class AstProgram extends AstNode
 {
 	public AstDecList decList;
 
-	public AstProgram(AstDecList decList)
+	public AstProgram(AstDecList decList, int lineNumber)
 	{
+		super(lineNumber);
 		serialNumber = AstNodeSerialNumber.getFresh();
 
 		if (decList != null) System.out.print("====================== program -> decList\n");

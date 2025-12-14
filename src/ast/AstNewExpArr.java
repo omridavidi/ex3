@@ -8,8 +8,9 @@ public class AstNewExpArr extends AstNewExp
     public AstType type;
     public AstExp size;
 
-    public AstNewExpArr(AstType type, AstExp size)
+    public AstNewExpArr(AstType type, AstExp size, int lineNumber)
     {
+        super(lineNumber);
         serialNumber = AstNodeSerialNumber.getFresh();
         System.out.print("====================== newExp -> NEW type [exp]\n");
         // actual variable of type array

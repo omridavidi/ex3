@@ -8,8 +8,9 @@ public class AstcFieldList extends AstNode
 	public AstcField head;
 	public AstcFieldList tail;
 
-	public AstcFieldList(AstcField cField, AstcFieldList cFieldList)
+	public AstcFieldList(AstcField cField, AstcFieldList cFieldList, int lineNumber)
 	{
+		super(lineNumber);
 		serialNumber = AstNodeSerialNumber.getFresh();
 
 		if (cField == null) System.out.print("====================== cFieldList -> cField\n");

@@ -7,8 +7,9 @@ public class AstNewExpSimple extends AstNewExp
 {
     public AstType type;
 
-    public AstNewExpSimple(AstType type)
+    public AstNewExpSimple(AstType type, int lineNumber)
     {
+        super(lineNumber);
         serialNumber = AstNodeSerialNumber.getFresh();
         System.out.print("====================== newExp -> NEW type\n");
         // p := NEW Point; <-- "NEW Point" is NewExpSimple

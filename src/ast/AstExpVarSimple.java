@@ -7,9 +7,10 @@ public class AstExpVarSimple extends AstExpVar
 {
 	public AstVar var;
 	
-	public AstExpVarSimple(AstVar var)
+	public AstExpVarSimple(AstVar var, int lineNumber)
 	{
 		// x
+		super(lineNumber);
 		serialNumber = AstNodeSerialNumber.getFresh();
 
 		System.out.format("====================== exp -> var\n");

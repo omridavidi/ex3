@@ -8,8 +8,9 @@ public class AstParam extends AstNode
 	public AstType type;
 	public String name;
 	
-	public AstParam(AstType type, String name)
+	public AstParam(AstType type, String name, int lineNumber)
 	{
+		super(lineNumber);
 		serialNumber = AstNodeSerialNumber.getFresh();
 
 		System.out.format("====================== parameter -> type ID(%s)\n", name);

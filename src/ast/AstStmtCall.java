@@ -7,8 +7,9 @@ public class AstStmtCall extends AstStmt
 {
 	public AstCallExp call;
 
-	public AstStmtCall(AstCallExp call)
+	public AstStmtCall(AstCallExp call, int lineNumber)
 	{
+		super(lineNumber);
 		serialNumber = AstNodeSerialNumber.getFresh();
 
 		System.out.print("====================== stmt -> callExp;\n");

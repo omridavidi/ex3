@@ -16,8 +16,9 @@ public class AstVarSubscript extends AstVar
 	public AstVar var;
 	public AstExp subscript;
 	
-	public AstVarSubscript(AstVar var, AstExp subscript)
+	public AstVarSubscript(AstVar var, AstExp subscript, int lineNumber)
 	{
+		super(lineNumber);
 		System.out.print("====================== var -> var [ exp ]\n");
 		// a[i] --> var: a , subscript: i
 		

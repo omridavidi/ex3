@@ -7,8 +7,9 @@ public class AstStmtReturn extends AstStmt
 {
 	public AstExp exp;
 
-	public AstStmtReturn(AstExp exp)
+	public AstStmtReturn(AstExp exp, int lineNumber)
 	{
+		super(lineNumber);
 		serialNumber = AstNodeSerialNumber.getFresh();
 
 		this.exp = exp;

@@ -9,8 +9,9 @@ public class AstStmtList extends AstNode
 	public AstStmt head;
 	public AstStmtList tail;
 
-	public AstStmtList(AstStmt head, AstStmtList tail)
+	public AstStmtList(AstStmt head, AstStmtList tail, int lineNumber)
 	{
+		super(lineNumber);
 		serialNumber = AstNodeSerialNumber.getFresh();
 
 		if (tail != null) System.out.print("====================== stmts -> stmt stmts\n");

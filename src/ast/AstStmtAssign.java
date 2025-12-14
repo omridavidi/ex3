@@ -8,8 +8,9 @@ public class AstStmtAssign extends AstStmt
 	public AstVar var;
 	public AstExp exp;
 
-	public AstStmtAssign(AstVar var, AstExp exp)
+	public AstStmtAssign(AstVar var, AstExp exp, int lineNumber)
 	{
+		super(lineNumber);
 		serialNumber = AstNodeSerialNumber.getFresh();
 
 		System.out.print("====================== stmt -> var := exp ;\n");

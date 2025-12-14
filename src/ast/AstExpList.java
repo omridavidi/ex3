@@ -8,8 +8,9 @@ public class AstExpList extends AstNode
 	public AstExp head;
 	public AstExpList tail;
 
-	public AstExpList(AstExp head, AstExpList tail)
+	public AstExpList(AstExp head, AstExpList tail, int lineNumber)
 	{
+		super(lineNumber);
 
 		serialNumber = AstNodeSerialNumber.getFresh();
 

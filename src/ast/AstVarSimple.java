@@ -7,8 +7,9 @@ public class AstVarSimple extends AstVar
 {
 	public String name;
 	
-	public AstVarSimple(String name)
+	public AstVarSimple(String name, int lineNumber)
 	{
+		super(lineNumber);
 		serialNumber = AstNodeSerialNumber.getFresh();
 
 		System.out.format("====================== var -> ID( %s )\n",name);

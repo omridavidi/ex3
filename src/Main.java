@@ -1,4 +1,6 @@
 import java.io.*;
+
+import Exception.*;
 import java_cup.runtime.*;
 import ast.*;
 
@@ -28,18 +30,35 @@ public class Main {
             fileWriter.close();
 		
     	}
-        catch (Exception e) {
+
+        catch (LexicalException lexError) {
             try {
                 PrintWriter w = new PrintWriter(outputFileName);
-                
-                if (p != null && (e.getMessage().contains("lex error")))
-                    w.print("ERROR");
-                else if (p != null && (e.getMessage().contains("syntax error") || e.getMessage().contains("semantic error"))) 
-                    w.print("ERROR(" + p.errorLine + ")");
-                else
-                    w.print("ERROR");
+                w.print("ERROR");
                 w.close();
             } catch (Exception ignore) {}
         }
+        catch (SyntacticException syntacticError) {
+            try {
+                PrintWriter w = new PrintWriter(outputFileName);
+                w.print("ERROR(" + syntacticError.getLine() + ")");
+                w.close();
+            } catch (Exception ignore) {}
+        }
+        catch (SemanticException semanticError) {
+            try {
+                PrintWriter w = new PrintWriter(outputFileName);
+                w.print("ERROR(" + semanticError.getLine() + ")");
+                w.close();
+            } catch (Exception ignore) {}
+        }
+        catch (Exception e) {
+            try {
+                PrintWriter w = new PrintWriter(outputFileName);
+                w.print("ERROR(" + "for debug only" + ")");
+                w.close();
+            } catch (Exception ignore) {}
+        }
+
     }
 }

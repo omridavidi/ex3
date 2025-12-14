@@ -8,8 +8,9 @@ public class AstExpInt extends AstExp
 {
 	public int value;
 	
-	public AstExpInt(int value)
+	public AstExpInt(int value, int lineNumber)
 	{
+		super(lineNumber);
 		serialNumber = AstNodeSerialNumber.getFresh();
 
 		System.out.format("====================== exp -> INT( %d )\n", value);

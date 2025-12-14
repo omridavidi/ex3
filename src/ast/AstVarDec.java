@@ -9,8 +9,9 @@ public class AstVarDec extends AstDec
 	public String name;
     public AstExp exp;
 
-	public AstVarDec(AstType type, String name, AstExp exp)
+	public AstVarDec(AstType type, String name, AstExp exp, int lineNumber)
 	{
+		super(lineNumber);
 		serialNumber = AstNodeSerialNumber.getFresh();
 
         if (exp != null)

@@ -9,8 +9,9 @@ public class AstExpVarField extends AstExpVar
 	public AstExpVar var;
 	public String fieldName;
 	
-	public AstExpVarField(AstExpVar var, String fieldName)
+	public AstExpVarField(AstExpVar var, String fieldName, int lineNumber)
 	{
+		super(lineNumber);
 		serialNumber = AstNodeSerialNumber.getFresh();
 
 		System.out.format("====================== var -> var DOT ID( %s )\n",fieldName);

@@ -7,8 +7,9 @@ import types.*;
 public class AstExpNil extends AstExp
 {
 	
-	public AstExpNil()
+	public AstExpNil(int lineNumber)
 	{
+		super(lineNumber);
 		serialNumber = AstNodeSerialNumber.getFresh();
 
 		System.out.format("====================== exp -> NIL\n");

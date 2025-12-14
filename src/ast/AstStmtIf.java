@@ -9,8 +9,9 @@ public class AstStmtIf extends AstStmt
 	public AstStmtList body;
 	public AstStmtList elseBody;
 
-	public AstStmtIf(AstExp cond, AstStmtList body)
+	public AstStmtIf(AstExp cond, AstStmtList body, int lineNumber)
 	{
+		super(lineNumber);
 		serialNumber = AstNodeSerialNumber.getFresh();
 
 		this.cond = cond;
@@ -18,8 +19,9 @@ public class AstStmtIf extends AstStmt
 		this.elseBody = null;
 	}
 
-	public AstStmtIf(AstExp cond, AstStmtList body, AstStmtList elseBody)
+	public AstStmtIf(AstExp cond, AstStmtList body, AstStmtList elseBody, int lineNumber)
 	{
+		super(lineNumber);
 		serialNumber = AstNodeSerialNumber.getFresh();
 
 		this.cond = cond;

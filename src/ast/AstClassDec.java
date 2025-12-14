@@ -10,8 +10,9 @@ public class AstClassDec extends AstDec
     public String superName;
     public AstcFieldList cFieldList;
 
-	public AstClassDec(String name, String superName, AstcFieldList cFieldList)
+	public AstClassDec(String name, String superName, AstcFieldList cFieldList, int lineNumber)
 	{
+		super(lineNumber);
 		serialNumber = AstNodeSerialNumber.getFresh();
 
         if (superName != null)

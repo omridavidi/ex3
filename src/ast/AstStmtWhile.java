@@ -8,8 +8,9 @@ public class AstStmtWhile extends AstStmt
 	public AstExp condition;
 	public AstStmtList body;
 
-	public AstStmtWhile(AstExp condition, AstStmtList body)
+	public AstStmtWhile(AstExp condition, AstStmtList body, int lineNumber)
 	{
+		super(lineNumber);
 		serialNumber = AstNodeSerialNumber.getFresh();
 
 		System.out.print("====================== stmt -> WHILE (exp) {stmtList}\n");

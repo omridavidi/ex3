@@ -7,8 +7,9 @@ public class AstTypeID extends AstType
 {
 	public String ID;
 	
-	public AstTypeID(String ID)
+	public AstTypeID(String ID, int lineNumber)
 	{
+		super(lineNumber);
 		serialNumber = AstNodeSerialNumber.getFresh();
 
 		System.out.format("====================== ID: (%s)\n",ID);

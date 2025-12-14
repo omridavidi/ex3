@@ -7,8 +7,9 @@ public class AstTypePrimitive extends AstType
 {
 	public String type;
 	
-	public AstTypePrimitive(String type)
+	public AstTypePrimitive(String type, int lineNumber)
 	{
+		super(lineNumber);
 		serialNumber = AstNodeSerialNumber.getFresh();
 	
 		System.out.format("====================== type(%s)\n",type);

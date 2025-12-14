@@ -9,8 +9,9 @@ public class AstDecList extends AstNode
 	public AstDec head;
 	public AstDecList tail;
 
-	public AstDecList(AstDec head, AstDecList tail)
+	public AstDecList(AstDec head, AstDecList tail, int lineNumber)
 	{
+		super(lineNumber);
 		serialNumber = AstNodeSerialNumber.getFresh();
 
 		if (tail != null) System.out.print("====================== decList -> dec decList\n");

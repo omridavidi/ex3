@@ -8,8 +8,9 @@ public class AstArrayTypeDec extends AstDec
 	public String name;
 	public AstType type;
 
-	public AstArrayTypeDec(String name, AstType type)
+	public AstArrayTypeDec(String name, AstType type, int lineNumber)
 	{
+		super(lineNumber);
 		serialNumber = AstNodeSerialNumber.getFresh();
 	
 		System.out.format("====================== arrayTypedec -> ARRAY ID = %s[];\n",type);

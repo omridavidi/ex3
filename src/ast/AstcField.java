@@ -7,8 +7,9 @@ public class AstcField extends AstNode
 {
 	public AstDec dec;
 	
-	public AstcField(AstDec dec)
+	public AstcField(AstDec dec, int lineNumber)
 	{
+		super(lineNumber);
 		serialNumber = AstNodeSerialNumber.getFresh();
 
 		System.out.format("====================== cField -> Dec)\n");

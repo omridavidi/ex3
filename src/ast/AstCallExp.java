@@ -9,8 +9,9 @@ public class AstCallExp extends AstExp
 	public String name;
     public AstExpList expList;
 	
-	public AstCallExp(AstVar var, String name, AstExpList expList)
+	public AstCallExp(AstVar var, String name, AstExpList expList, int lineNumber)
 	{
+		super(lineNumber);
 		serialNumber = AstNodeSerialNumber.getFresh();
 
         if (var != null)

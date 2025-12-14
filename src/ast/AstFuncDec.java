@@ -11,8 +11,9 @@ public class AstFuncDec extends AstDec
     public AstParamList paramList;
 	public AstStmtList stmtList;
 
-	public AstFuncDec(AstType type, String name, AstParamList paramList, AstStmtList stmtList)
+	public AstFuncDec(AstType type, String name, AstParamList paramList, AstStmtList stmtList, int lineNumber)
 	{
+		super(lineNumber);
 		serialNumber = AstNodeSerialNumber.getFresh();
 	
 		if (paramList == null) System.out.format("====================== funcDec -> type ID(%s) () {stmtList}\n", name);
