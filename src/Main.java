@@ -41,21 +41,21 @@ public class Main {
         catch (SyntacticException syntacticError) {
             try {
                 PrintWriter w = new PrintWriter(outputFileName);
-                w.print("ERROR(" + syntacticError.getLine() + ")");
+                w.print("1ERROR(" + syntacticError.getLine() + ")");
                 w.close();
             } catch (Exception ignore) {}
         }
         catch (SemanticException semanticError) {
             try {
                 PrintWriter w = new PrintWriter(outputFileName);
-                w.print("ERROR(" + semanticError.getLine() + ")");
+                w.print("2ERROR(" + semanticError.getLine() + ")");
                 w.close();
             } catch (Exception ignore) {}
         }
         catch (Exception e) {
             try {
                 PrintWriter w = new PrintWriter(outputFileName);
-                w.print("ERROR(" + "for debug only" + ")");
+                w.print("3ERROR(" + "for debug only" + ")");
                 w.close();
             } catch (Exception ignore) {}
         }
