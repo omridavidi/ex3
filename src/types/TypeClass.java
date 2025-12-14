@@ -75,7 +75,7 @@ public class TypeClass extends Type
 			return false;
 		}
 
-		return (this.isSubTypeOf((TypeClass)other));
+		return ((TypeClass)other).isSubTypeOf(this);
 	}
 
 	
