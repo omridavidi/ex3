@@ -156,7 +156,7 @@ public class AstExpBinop extends AstExp
 				throw new SemanticException(this.getLineNumber(), "'=' operator requires compatible operand types");
 
 			default:
-				throw new SemanticException(this.getLineNumber(), "unknown binary operator");
+				throw new SemanticException(this.getLineNumber(), "unknown binary operator:" + this.op);
 		}
 	}
 }

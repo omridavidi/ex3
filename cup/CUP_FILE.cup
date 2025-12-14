@@ -3,6 +3,7 @@
 /*************/
 import java_cup.runtime.*;
 import ast.*;
+import Exception.*;
 
 parser code 
 {:
@@ -18,7 +19,7 @@ parser code
 	public void report_error(String message, Object info)
 	{
 		this.errorLine = lexer.getLine();
-		throw new SyntacticException("syntax error");
+		throw new SyntacticException(this.errorLine);
 	}
 :}
 
@@ -31,7 +32,7 @@ scan with
 	s = lexer.next_token();
 	if (s.sym == TokenNames.ERROR)
 	{
-		throw new LexicalException("lex error");
+		throw new LexicalException();
 	}
 
 	return s;

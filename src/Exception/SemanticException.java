@@ -16,6 +16,10 @@ public class SemanticException extends RuntimeException {
     }
 
     public int getLine() {
-        return line;
+        return this.line;
+    }
+
+    public String getMessage() {
+        return this.message;
     }
 }

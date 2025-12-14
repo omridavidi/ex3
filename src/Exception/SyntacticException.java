@@ -18,4 +18,7 @@ public class SyntacticException extends RuntimeException {
     public int getLine() {
         return line;
     }
+    public String getMessage() {
+        return this.message;
+    }
 }
