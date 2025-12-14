@@ -183,7 +183,7 @@ cField		::=		varDec:vd		{: RESULT = new AstcField(vd);	        :}
 arrayTypedec::=		ARRAY ID:name EQ type:t LBRACK RBRACK SEMICOLON							{: RESULT = new AstArrayTypeDec(name, t);			:}
 					;
 
-exp			::=		var:v								{: RESULT = new AstExpVarSimple(v);					:}
+exp			::=		var:v								{: RESULT = new AstExpVarSimple(v);				:}
 					| LPAREN exp:e RPAREN				{: RESULT = e;					 				:}
 					| exp:e1 PLUS  exp:e2				{: RESULT = new AstExpBinop(e1, e2, 0);			:}
 					| exp:e1 MINUS exp:e2				{: RESULT = new AstExpBinop(e1, e2, 1);			:}

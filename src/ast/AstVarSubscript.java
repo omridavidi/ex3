@@ -5,7 +5,7 @@ import javax.lang.model.util.Elements;
 import symboltable.SymbolTable;
 import types.*;
 
-public class AstVarSubscript extends AstExpVar
+public class AstVarSubscript extends AstVar
 {
 	// 	Accessing an array: Elements of an array can be accessed using v[e], with the following rules:
 		// rule 1: The type of the variable v must be of an array.
@@ -13,10 +13,10 @@ public class AstVarSubscript extends AstExpVar
 		// rule 3: If e is a constant expression, it must be greater than or equal to zero
 		// rule 4: The resulting type is the element type T of the array that v is defined over.
 
-	public AstExpVar var;
+	public AstVar var;
 	public AstExp subscript;
 	
-	public AstVarSubscript(AstExpVar var, AstExp subscript)
+	public AstVarSubscript(AstVar var, AstExp subscript)
 	{
 		System.out.print("====================== var -> var [ exp ]\n");
 		// a[i] --> var: a , subscript: i

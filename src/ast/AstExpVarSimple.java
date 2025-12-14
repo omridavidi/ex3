@@ -5,31 +5,31 @@ import symboltable.*;
 
 public class AstExpVarSimple extends AstExpVar
 {
-	public String name;
+	public AstVar var;
 	
-	public AstExpVarSimple(String name)
+	public AstExpVarSimple(AstVar var)
 	{
+		// x
 		serialNumber = AstNodeSerialNumber.getFresh();
 
-		System.out.format("====================== var -> ID( %s )\n",name);
-		// x
-		
-		this.name = name;
+		System.out.format("====================== exp -> var\n");
+
+		this.var = var;
 	}
+
 
 	public void printMe()
 	{
-		System.out.format("AST NODE SIMPLE VAR( %s )\n",name);
+		System.out.format("AST NODE SIMPLE VAR\n");
 
 		AstGraphviz.getInstance().logNode(
                 serialNumber,
-			String.format("SIMPLE\nVAR\n(%s)",name));
+			String.format("SIMPLE\nVAR\n"));
 	}
 
 	public Type semantMe()
 	{
-		Type t = SymbolTable.getInstance().find(name);
-		if (t != null) return t;
-		throw new RuntimeException("semantic error: variable '" + name + "' not declared");
+		Type t = var.semantMe();
+		return t;
 	}
 }
