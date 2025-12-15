@@ -21,7 +21,7 @@ public abstract class AstNode
         this.lineNumber = lineNumber;
     }
 
-	public int getLineNumber() {
+	public int getLine() {
 		return lineNumber;
 	}
 	/***********************************************/
