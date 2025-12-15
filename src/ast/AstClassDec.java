@@ -98,7 +98,8 @@ public class AstClassDec extends AstDec
 		}
 
 
-
+		TypeClass classType = new TypeClass(superClassType, name, null);
+		symTable.enter(name, classType);
 		
 		//Assert no shadowing on parent classes
 		if (superClassType != null) {
@@ -127,9 +128,7 @@ public class AstClassDec extends AstDec
             }
         }
 
-		TypeClassVarDecList dataMembers = TypeClassVarDecList.classVarDecListFromAst(cFieldList);
-		TypeClass classType = new TypeClass(superClassType, name, dataMembers);
-		symTable.enter(name, classType);
+
 
 		symTable.beginScope();
 
@@ -142,6 +141,7 @@ public class AstClassDec extends AstDec
 
 		symTable.endScope();
 
+		classType.dataMembers = TypeClassVarDecList.classVarDecListFromAst(cFieldList);
 		return classType;
 	}
 

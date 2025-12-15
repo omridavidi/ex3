@@ -63,7 +63,7 @@ public class Main {
             try {
                 PrintWriter w = new PrintWriter(outputFileName);
                 //w.print("errERROR(" + "for debug only" + ")" + "reason: " + e.getMessage());
-                w.print("errERROR(" + "for debug only" + ")");
+                w.print("errERROR(" + "for debug only" + "): " + e.getMessage());
                 w.close();
             } catch (Exception ignore) {}
         }
