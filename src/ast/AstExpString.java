@@ -26,7 +26,7 @@ public class AstExpString extends AstExp
 	
 		AstGraphviz.getInstance().logNode(
 				serialNumber,
-			String.format("STRING(%s)",value));		
+			String.format("STRING(%s)",value.replace("\"", "\\\"")));		
 	}
 
 	public Type semantMe()

@@ -97,6 +97,9 @@ public class AstClassDec extends AstDec
 			}
 		}
 
+
+
+		
 		//Assert no shadowing on parent classes
 		if (superClassType != null) {
             for (AstcFieldList cFieldNode = cFieldList; cFieldNode != null; cFieldNode = cFieldNode.tail) {
@@ -114,6 +117,7 @@ public class AstClassDec extends AstDec
                         if (!(ParentField instanceof TypeFunction)) throw new SemanticException(this.getLine(), "method '" + fd.name + "' shadows non-function member in superclass");
 
                         TypeFunction parentFunc = (TypeFunction) ParentField;
+
                         Type retType = fd.type.semantMe();
                         TypeList params = (fd.paramList != null ? fd.paramList.buildTypeList() : null);
 

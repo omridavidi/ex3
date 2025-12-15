@@ -23,6 +23,11 @@ public class Main {
 
             AstProgram program = (AstProgram) p.parse().value;
             
+            // Generate AST visualization
+            AstGraphviz.getInstance();
+            program.printMe();
+            AstGraphviz.getInstance().finalizeFile();
+            
             // Perform semantic analysis
             program.semantMe();
 

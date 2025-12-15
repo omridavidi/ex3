@@ -75,7 +75,7 @@ public class SymbolTable
 		/**************************************************************************/
 		/* [3] Prepare a new symbol table entry with name, type, next and prevtop */
 		/**************************************************************************/
-		SymbolTableEntry e = new SymbolTableEntry(name,t, hashValue, next, top, topIndex++);
+		SymbolTableEntry e = new SymbolTableEntry(name, t, hashValue, next, top, topIndex++);
 
 		/**********************************************/
 		/* [4] Update the top of the symbol table ... */

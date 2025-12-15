@@ -13,7 +13,7 @@ public class AstcField extends AstNode
 		super(lineNumber);
 		serialNumber = AstNodeSerialNumber.getFresh();
 
-		System.out.format("====================== cField -> Dec)\n");
+		System.out.format("====================== cField -> Dec\n");
 		/* class point{
 			int x; <-- cField
 			}
