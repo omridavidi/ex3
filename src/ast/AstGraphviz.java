@@ -2,6 +2,7 @@ package ast;
 
 import Exception.SemanticException;
 import java.io.PrintWriter;
+import java.io.File;
 
 public class AstGraphviz
 {
@@ -36,19 +37,26 @@ public class AstGraphviz
 			{
 				String dirname="./output/";
 				String filename="AST_IN_GRAPHVIZ_DOT_FORMAT.txt";
+				
+				// Create output directory if it doesn't exist
+				File dir = new File(dirname);
+				if (!dir.exists()) {
+					dir.mkdirs();
+				}
+				
 				instance.fileWriter = new PrintWriter(dirname+filename);
+				
+				/******************************************************/
+				/* Print Directed Graph header in Graphviz dot format */
+				/******************************************************/
+				instance.fileWriter.print("digraph\n");
+				instance.fileWriter.print("{\n");
+				instance.fileWriter.print("graph [ordering = \"out\"]\n");
 			}
 			catch (Exception e)
 			{
 				e.printStackTrace();
 			}
-
-			/******************************************************/
-			/* Print Directed Graph header in Graphviz dot format */
-			/******************************************************/
-			instance.fileWriter.print("digraph\n");
-			instance.fileWriter.print("{\n");
-			instance.fileWriter.print("graph [ordering = \"out\"]\n");
 		}
 		return instance;
 	}
@@ -58,10 +66,12 @@ public class AstGraphviz
 	/***********************************/
 	public void logNode(int nodeSerialNumber,String nodeName)
 	{
-		fileWriter.format(
-			"v%d [label = \"%s\"];\n",
-			nodeSerialNumber,
-			nodeName);
+		if (fileWriter != null) {
+			fileWriter.format(
+				"v%d [label = \"%s\"];\n",
+				nodeSerialNumber,
+				nodeName);
+		}
 	}
 
 	/***********************************/
@@ -71,10 +81,12 @@ public class AstGraphviz
 		int fatherNodeSerialNumber,
 		int sonNodeSerialNumber)
 	{
-		fileWriter.format(
-			"v%d -> v%d;\n",
-			fatherNodeSerialNumber,
-			sonNodeSerialNumber);
+		if (fileWriter != null) {
+			fileWriter.format(
+				"v%d -> v%d;\n",
+				fatherNodeSerialNumber,
+				sonNodeSerialNumber);
+		}
 	}
 	
 	/******************************/
@@ -82,7 +94,9 @@ public class AstGraphviz
 	/******************************/
 	public void finalizeFile()
 	{
-		fileWriter.print("}\n");
-		fileWriter.close();
+		if (fileWriter != null) {
+			fileWriter.print("}\n");
+			fileWriter.close();
+		}
 	}
 }
