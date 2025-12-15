@@ -57,7 +57,7 @@ public class AstVarDec extends AstDec
 		
 		Type t = type.semantMe();
 		if (t == null || t == TypeVoid.getInstance())
-            throw new SemanticException(this.getLineNumber(), "variable '" + name + "' cannot be of type void");
+            throw new SemanticException(this.getLineNumber(), "variable '" + name + "' cannot be of type void or null");
 		
 		if (SymbolTable.getInstance().lookupLocal(name) != null)
             throw new SemanticException(this.getLineNumber(), "variable '" + name + "' already declared in current scope");

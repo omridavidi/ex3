@@ -34,21 +34,21 @@ public class Main {
         catch (LexicalException lexError) {
             try {
                 PrintWriter w = new PrintWriter(outputFileName);
-                w.print("lexERROR");
+                w.print("ERROR");
                 w.close();
             } catch (Exception ignore) {}
         }
         catch (SyntacticException syntacticError) {
             try {
                 PrintWriter w = new PrintWriter(outputFileName);
-                w.print("synERROR(" + syntacticError.getLine() + ")" + "reason: " + syntacticError.getMessage());
+                w.print("ERROR(" + syntacticError.getLine() + ")" + "reason: " + syntacticError.getMessage());
                 w.close();
             } catch (Exception ignore) {}
         }
         catch (SemanticException semanticError) {
             try {
                 PrintWriter w = new PrintWriter(outputFileName);
-                w.print("semERROR(" + semanticError.getLine() + ")" + "reason: " + semanticError.getMessage());
+                w.print("ERROR(" + semanticError.getLine() + ")" + "reason: " + semanticError.getMessage());
                 w.close();
             } catch (Exception ignore) {}
         }
