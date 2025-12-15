@@ -38,22 +38,22 @@ public class AstStmtReturn extends AstStmt
 			whose type is compatible with type T.
 		*/
 		Type returnType = SymbolTable.getInstance().find("__RET_TYPE__");
-		if (returnType == null) throw new SemanticException(this.getLineNumber(), "return statement outside function context");
+		if (returnType == null) throw new SemanticException(this.getLine(), "return statement outside function context");
 
 		Type expType = null;
 		if (exp != null) expType = exp.semantMe();
 
-		if (returnType == TypeVoid.getInstance() && exp != null) throw new SemanticException(this.getLineNumber(), "void function cannot return a value");
+		if (returnType == TypeVoid.getInstance() && exp != null) throw new SemanticException(this.getLine(), "void function cannot return a value");
 
 		if (exp == null) return null;
 
 		if (expType == TypeNil.getInstance()) {
             if (!(returnType instanceof TypeClass) && !(returnType instanceof TypeArray))
-                throw new SemanticException(this.getLineNumber(), "cannot return nil for non-class/array return type");
+                throw new SemanticException(this.getLine(), "cannot return nil for non-class/array return type");
             return null;
         }
 
-		if (!returnType.isCompatibleWith(expType)) throw new SemanticException(this.getLineNumber(), "return type incompatible with function return type");
+		if (!returnType.isCompatibleWith(expType)) throw new SemanticException(this.getLine(), "return type incompatible with function return type");
 		return null;
 	}
 }

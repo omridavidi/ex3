@@ -64,7 +64,7 @@ public class AstStmtAssign extends AstStmt
 		}
 		
         if (!t1.isCompatibleWith(t2))
-			throw new SemanticException(this.getLineNumber(), "assignment type mismatch");
+			throw new SemanticException(this.getLine(), "assignment type mismatch");
 		return null;
 	}
 }

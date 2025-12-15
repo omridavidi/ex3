@@ -32,7 +32,7 @@ public class AstTypeID extends AstType
 		Type type = SymbolTable.getInstance().find(ID);
 
 		if (type == null || type == TypeVoid.getInstance())
-			throw new SemanticException(this.getLineNumber(), "type '" + ID + "' not declared or is void");
+			throw new SemanticException(this.getLine(), "type '" + ID + "' not declared or is void");
 		return type;
 	}
 }

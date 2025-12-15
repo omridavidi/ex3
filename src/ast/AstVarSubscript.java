@@ -42,19 +42,19 @@ public class AstVarSubscript extends AstVar
 		
 		// rule 1: The type of the variable v must be of an array.
 		if (!(type instanceof TypeArray))
-            throw new SemanticException(this.getLineNumber(), "cannot subscript non-array type");
+            throw new SemanticException(this.getLine(), "cannot subscript non-array type");
 		
 		// rule 2: The subscript expression e must be of type int.
         Type subscriptType = subscript.semantMe();
         if (subscriptType != TypeInt.getInstance())
-            throw new SemanticException(this.getLineNumber(), "array subscript must be of type int");
+            throw new SemanticException(this.getLine(), "array subscript must be of type int");
 
 		// rule 3: If e is a constant expression, it must be greater than or equal to zero
 		if (subscript instanceof AstExpInt)
 		{
 			AstExpInt constExp = (AstExpInt) subscript;
 			if (constExp.value < 0)
-				throw new SemanticException(this.getLineNumber(), "array subscript must be non-negative");
+				throw new SemanticException(this.getLine(), "array subscript must be non-negative");
 		}
 
 		// rule 4: The resulting type is the element type T of the array that v is defined over.

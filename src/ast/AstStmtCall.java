@@ -33,10 +33,10 @@ public class AstStmtCall extends AstStmt
 	}
 
 	public Type semantMe(){
-		if (call == null) throw new SemanticException(this.getLineNumber(), "call statement has no call expression");
+		if (call == null) throw new SemanticException(this.getLine(), "call statement has no call expression");
 
         Type t = call.semantMe();
-        if (t == null) throw new SemanticException(this.getLineNumber(), "call expression has no return type");
+        if (t == null) throw new SemanticException(this.getLine(), "call expression has no return type");
 
 		return null;
 	}

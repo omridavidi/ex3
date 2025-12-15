@@ -42,7 +42,7 @@ public class AstExpVarField extends AstExpVar
 		
 		if (var != null) t = var.semantMe();
 	
-		if (!(t instanceof TypeClass)) throw new SemanticException(this.getLineNumber(), "cannot access field of non-class type");
+		if (!(t instanceof TypeClass)) throw new SemanticException(this.getLine(), "cannot access field of non-class type");
 		tc = (TypeClass) t;
 		
 		for (TypeClassVarDecList node = tc.dataMembers; node != null; node=node.tail)
@@ -50,6 +50,6 @@ public class AstExpVarField extends AstExpVar
 			if (node.head.name == fieldName) return node.head.type;
 		}
 		
-		throw new SemanticException(this.getLineNumber(), "field '" + fieldName + "' not found in class");
+		throw new SemanticException(this.getLine(), "field '" + fieldName + "' not found in class");
 	}
 }

@@ -39,10 +39,10 @@ public class AstArrayTypeDec extends AstDec
 	public TypeArray semantMe(){
 
 		// Check for reserved keywords
-		if (SymbolTable.isReservedKeyword(name)) throw new SemanticException(this.getLineNumber(), "array type '" + name + "' cannot use reserved keyword");
+		if (SymbolTable.isReservedKeyword(name)) throw new SemanticException(this.getLine(), "array type '" + name + "' cannot use reserved keyword");
 
 		// Array type declarations can only appear in global scope
-		if (!SymbolTable.getInstance().getScope().equals("GLOBAL")) throw new SemanticException(this.getLineNumber(), "array type '" + name + "' can only be declared in global scope");
+		if (!SymbolTable.getInstance().getScope().equals("GLOBAL")) throw new SemanticException(this.getLine(), "array type '" + name + "' can only be declared in global scope");
 
 		// rule 1: type must not be void
 		// rule 2: An array type must be defined over a previously declared (non-void) type.
@@ -52,13 +52,13 @@ public class AstArrayTypeDec extends AstDec
 		// rule 1: type must not be void
 		if (elementType == TypeVoid.getInstance())
 			{
-				throw new SemanticException(this.getLineNumber(), "array type '" + name + "' cannot be defined over void type");
+				throw new SemanticException(this.getLine(), "array type '" + name + "' cannot be defined over void type");
 			}
 		
 		// rule 2: An array type must be defined over a previously declared (non-void) type.
 		if (SymbolTable.getInstance().lookupLocal(name) != null)
 			{
-				throw new SemanticException(this.getLineNumber(), "array type '" + name + "' already declared in current scope");
+				throw new SemanticException(this.getLine(), "array type '" + name + "' already declared in current scope");
 			}
 
 		TypeArray array = new TypeArray(name, elementType);

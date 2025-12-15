@@ -65,16 +65,16 @@ public class AstFuncDec extends AstDec
 	public Type semantMe()
 	{
 		// Check for reserved keywords
-		if (SymbolTable.isReservedKeyword(name)) throw new SemanticException(this.getLineNumber(), "function '" + name + "' cannot use reserved keyword");
+		if (SymbolTable.isReservedKeyword(name)) throw new SemanticException(this.getLine(), "function '" + name + "' cannot use reserved keyword");
 		
 		Type returnType = null;
 		TypeList type_list = null;
 
 		returnType = type.semantMe();
-		if (returnType == null) throw new SemanticException(this.getLineNumber(), "function return type is invalid");
+		if (returnType == null) throw new SemanticException(this.getLine(), "function return type is invalid");
 
 		// defining multiple methods with the same name but different signatures in the same class) is illegal.
-		if (SymbolTable.getInstance().lookupLocal(name) != null) throw new SemanticException(this.getLineNumber(), "function '" + name + "' already declared in current scope");
+		if (SymbolTable.getInstance().lookupLocal(name) != null) throw new SemanticException(this.getLine(), "function '" + name + "' already declared in current scope");
 		
 		// Check for duplicate parameter names
 		HashSet<String> paramNames = new HashSet<>();
@@ -82,7 +82,7 @@ public class AstFuncDec extends AstDec
 		{
 			if (!paramNames.add(paramNode.param.name))
 			{
-				throw new SemanticException(this.getLineNumber(), "duplicate parameter name '" + paramNode.param.name + "' in function '" + name + "'");
+				throw new SemanticException(this.getLine(), "duplicate parameter name '" + paramNode.param.name + "' in function '" + name + "'");
 			}
 		}
 
