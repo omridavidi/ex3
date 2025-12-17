@@ -100,11 +100,13 @@ public class AstCallExp extends AstExp
 					if (foundDataMember instanceof TypeFunction)  // current data member is a function 
 						{
 						function = (TypeFunction) foundDataMember;
+						expectedParameters = function.params;
 						break;
 						}
 				}
 				objectClass = objectClass.father;
 			}
+			if (function == null) throw new SemanticException(this.getLine(), "method '" + name + "' not found in class");
 		}
 		
 

@@ -170,8 +170,8 @@ stmtList	::=		stmt:s	stmtList:l	                                                
 					| stmt:s			                                                    {: RESULT = new AstStmtList(s, null, s.getLine()); 	            :}
 					;
 
-classDec	::=		CLASS ID:name LBRACE cFieldList:l RBRACE 								{: RESULT = new AstClassDec(name, null, l, lexer.getLine()); 		:}
-					| CLASS ID:name1 EXTENDS ID:name2 LBRACE cFieldList:l RBRACE 			{: RESULT = new AstClassDec(name1, name2, l, lexer.getLine()); 		:}
+classDec	::=		CLASS:c ID:name LBRACE cFieldList:l RBRACE 								{: RESULT = new AstClassDec(name, null, l, cleft+1); 		:}
+					| CLASS:c ID:name1 EXTENDS ID:name2 LBRACE cFieldList:l RBRACE 			{: RESULT = new AstClassDec(name1, name2, l, cleft+1); 		:}
 					;
 
 cFieldList	::=		cField:cf	cFieldList:cfl	                                            {: RESULT = new AstcFieldList(cf, cfl, cf.getLine());            	:}
@@ -182,8 +182,7 @@ cField		::=		varDec:vd		{: RESULT = new AstcField(vd, lexer.getLine());	        
 					| funcDec:fd 	{: RESULT = new AstcField(fd, lexer.getLine());			:}
 					;
 
-arrayTypedec::=		ARRAY ID:name EQ type:t LBRACK RBRACK SEMICOLON							{: RESULT = new AstArrayTypeDec(name, t, lexer.getLine());			:}
-					;
+arrayTypedec::=		ARRAY:a ID:name EQ type:t LBRACK RBRACK SEMICOLON							{: RESULT = new AstArrayTypeDec(name, t, aleft+1);			:}					;
 
 exp			::=		var:v								{: RESULT = new AstExpVarSimple(v, lexer.getLine());				:}
 					| LPAREN exp:e RPAREN				{: RESULT = e;										 				:}

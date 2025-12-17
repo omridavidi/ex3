@@ -92,7 +92,7 @@ public class AstClassDec extends AstDec
 		
 				// now fieldName is set to the name of the field
 				// check for duplicates within the current class
-				if (fieldName == null || fieldNames.contains(fieldName)) throw new SemanticException(this.getLine(), "duplicate field name '" + fieldName + "' in class '" + name + "'");
+				if (fieldName == null || fieldNames.contains(fieldName)) throw new SemanticException(cFieldNode.head.dec.getLine(), "duplicate field name '" + fieldName + "' in class '" + name + "'");
 				fieldNames.add(fieldName);
 			}
 		}
@@ -108,21 +108,21 @@ public class AstClassDec extends AstDec
 
                 if (dec instanceof AstVarDec) {
                     AstVarDec vd = (AstVarDec) dec;
-                    if (superClassType.findElementInClassHierarchy(vd.name) != null) throw new SemanticException(this.getLine(), "variable '" + vd.name + "' shadows inherited member in class '" + name + "'");
+					if (superClassType.findElementInClassHierarchy(vd.name) != null) throw new SemanticException(vd.getLine(), "variable '" + vd.name + "' shadows inherited member in class '" + name + "'");
                 }
 				else if (dec instanceof AstFuncDec) {
                     AstFuncDec fd = (AstFuncDec) dec;
                     Type ParentField = superClassType.findElementInClassHierarchy(fd.name);
 
                     if (ParentField != null) {
-                        if (!(ParentField instanceof TypeFunction)) throw new SemanticException(this.getLine(), "method '" + fd.name + "' shadows non-function member in superclass");
+						if (!(ParentField instanceof TypeFunction)) throw new SemanticException(fd.getLine(), "method '" + fd.name + "' shadows non-function member in superclass");
 
                         TypeFunction parentFunc = (TypeFunction) ParentField;
 
                         Type retType = fd.type.semantMe();
                         TypeList params = (fd.paramList != null ? fd.paramList.buildTypeList() : null);
 
-                        if (!signaturesMatch(parentFunc, retType, params)) throw new SemanticException(this.getLine(), "method '" + fd.name + "' signature does not match overridden method in superclass");
+                        if (!signaturesMatch(parentFunc, retType, params)) throw new SemanticException(fd.getLine(), "method '" + fd.name + "' signature does not match overridden method in superclass");
                     }
                 }
             }
